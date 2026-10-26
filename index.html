@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pasos de la Diálisis</title>
+<style>
+  :root{
+    --bg1:       #eef4f7;
+    --bg2:       #dfeaf0;
+    --card:      #ffffff;
+    --texto:     #15212e;
+    --suave:     #51647a;
+    --acento:    #0b6e6e;
+    --acento2:   #0a5f8c;
+    --acento-cl: #e3f2f1;
+    --borde:     #d4dee5;
+    --aviso-bg:  #fff7e6;
+    --aviso-bd:  #e7b84b;
+    --sombra:    0 14px 38px rgba(20,45,70,.14);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+
+  body{
+    font-family: Verdana, "Segoe UI", Tahoma, Arial, sans-serif;
+    background: radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, var(--bg1) 45%, var(--bg2) 100%);
+    color: var(--texto);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    padding: 16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100vh;
+  }
+
+  header{ text-align:center; margin: 8px 0 16px; }
+  header h1{
+    font-size: clamp(26px, 5vw, 42px);
+    margin: 0;
+    color: var(--acento);
+    letter-spacing: .5px;
+    text-shadow: 0 2px 0 rgba(255,255,255,.6);
+  }
+  header p{
+    margin: 6px 0 0;
+    font-size: clamp(15px, 2.4vw, 19px);
+    color: var(--suave);
+  }
+  header sup{ color: var(--aviso-bd); font-weight:bold; }
+
+  .app{ width:100%; max-width: 740px; }
+
+  /* Progreso */
+  .progress-wrap{ margin: 0 4px 14px; }
+  .progress-track{
+    height: 14px; background:#d3e0e7; border-radius:99px; overflow:hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.12);
+  }
+  .progress-fill{
+    height:100%; width:0%;
+    background: linear-gradient(90deg, var(--acento), var(--acento2));
+    border-radius:99px; transition: width .35s ease;
+  }
+  .progress-text{
+    text-align:center; margin-top:8px;
+    font-size: clamp(16px, 2.6vw, 20px); font-weight:bold; color: var(--suave);
+  }
+
+  /* Carrusel */
+  .viewport{ overflow:hidden; border-radius: 24px; }
+  .track{ display:flex; transition: transform .35s cubic-bezier(.22,.61,.36,1); touch-action: pan-y; }
+  .slide{ flex:0 0 100%; padding: 6px; }
+
+  .card{
+    position:relative;
+    background: var(--card);
+    border-radius: 24px;
+    box-shadow: var(--sombra);
+    border: 1px solid var(--borde);
+    padding: 26px 22px 28px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:7px;
+    background: linear-gradient(90deg, var(--acento), var(--acento2));
+  }
+
+  .kicker{
+    display:inline-block; margin-top:4px;
+    background: linear-gradient(90deg, var(--acento), var(--acento2));
+    color:#fff; font-size: clamp(17px, 3.2vw, 23px); font-weight:bold;
+    padding: 7px 20px; border-radius: 99px; letter-spacing:1px;
+    box-shadow: 0 6px 14px rgba(11,110,110,.28);
+  }
+
+  .media{
+    margin: 20px auto 16px; width:100%; max-width: 360px; aspect-ratio: 4/3;
+    background: radial-gradient(circle at 50% 35%, #ffffff, var(--acento-cl));
+    border-radius: 20px; border:1px solid var(--borde);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .media .photo{ width:100%; height:100%; object-fit:cover; display:none; }
+  .media .vid{ width:100%; height:100%; object-fit:cover; display:none; }
+  .media .icon{
+    width:62%; max-width:210px; color: var(--acento);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .media .icon svg{ width:100%; height:auto; display:block; overflow:visible; }
+
+  .title{
+    font-size: clamp(24px, 4.6vw, 35px); font-weight:bold;
+    margin: 6px 0 12px; color: var(--texto);
+  }
+  .text{
+    font-size: clamp(19px, 3.4vw, 24px); color: var(--texto);
+    margin: 0 auto; max-width: 560px;
+  }
+
+  /* Navegación */
+  .nav{ display:flex; gap: 12px; margin-top: 18px; }
+  .btn{
+    flex:1; font-family:inherit; font-size: clamp(19px, 3.4vw, 24px); font-weight:bold;
+    padding: 18px 14px; border:none; border-radius: 16px;
+    background: linear-gradient(180deg, #0c7a7a, var(--acento));
+    color:#fff; cursor:pointer; box-shadow: 0 6px 0 rgba(8,70,70,.35);
+    transition: transform .08s, filter .15s; user-select:none; -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover{ filter:brightness(1.08); }
+  .btn:active{ transform: translateY(3px); box-shadow: 0 3px 0 rgba(8,70,70,.35); }
+  .btn:disabled{ background:#b9c6ce; color:#eef3f6; cursor:not-allowed; box-shadow:none; }
+  .btn .flecha{ font-size:1.3em; vertical-align:middle; }
+
+  .hint{ text-align:center; margin-top: 14px; font-size:15px; color: var(--suave); }
+
+  .aviso{
+    margin: 18px auto 6px; max-width: 740px;
+    background: var(--aviso-bg); border:1px solid var(--aviso-bd);
+    border-left: 6px solid var(--aviso-bd);
+    border-radius: 12px; padding: 14px 18px;
+    font-size: clamp(14px, 2.4vw, 16px); color:#6b5114; line-height:1.55;
+  }
+  .aviso b{ color:#8a6309; }
+
+  /* ===== Animaciones de iconos (solo en la tarjeta activa) ===== */
+  .icon svg *{ transform-box: fill-box; transform-origin: center; }
+  .icon svg .pivot{ transform-box: view-box; }
+  .icon svg .a-flow{ stroke-dasharray: 7 7; }
+
+  .slide.active .a-rise   { animation: aRise   2.4s ease-in-out infinite; }
+  .slide.active .a-drop   { animation: aDrop   1.8s ease-in     infinite; }
+  .slide.active .a-beat   { animation: aBeat   1.4s ease-in-out infinite; }
+  .slide.active .a-breath { animation: aBreath 2.6s ease-in-out infinite; }
+  .slide.active .a-swing  { animation: aSwing  2.4s ease-in-out infinite; }
+  .slide.active .a-wipe-down{ animation: aWipeDown 2.4s ease-in-out infinite; }
+  .slide.active .a-wipe-x { animation: aWipeX  1.9s ease-in-out infinite; }
+  .slide.active .a-spin   { animation: aSpin   6s   linear      infinite; }
+  .slide.active .a-lift   { animation: aLift   1.8s ease-in-out infinite; }
+  .slide.active .a-toright{ animation: aToRight 1.8s ease-in-out infinite; }
+  .slide.active .a-toleft { animation: aToLeft  1.8s ease-in-out infinite; }
+  .slide.active .a-fill   { animation: aFill   3s   ease-in-out infinite; transform-origin: center bottom; }
+  .slide.active .a-flow   { animation: aFlow   1.2s linear      infinite; }
+  .slide.active .a-seq    { animation: aSeq    1.8s ease-in-out infinite; }
+
+  /* Entrada del contenido al cambiar de paso */
+  .slide.active .kicker{ animation: up .4s both; }
+  .slide.active .media { animation: up .45s .05s both; }
+  .slide.active .title { animation: up .45s .12s both; }
+  .slide.active .text  { animation: up .45s .20s both; }
+
+  @keyframes up { from{opacity:0; transform: translateY(16px);} to{opacity:1; transform:none;} }
+  @keyframes aRise   { 0%{transform:translateY(8px);opacity:0} 25%{opacity:.9} 100%{transform:translateY(-14px);opacity:0} }
+  @keyframes aDrop   { 0%{transform:translateY(-8px);opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{transform:translateY(16px);opacity:0} }
+  @keyframes aBeat   { 0%,100%{transform:scale(1)} 12%{transform:scale(1.2)} 24%{transform:scale(1)} 36%{transform:scale(1.12)} 50%{transform:scale(1)} }
+  @keyframes aBreath { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
+  @keyframes aSwing  { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
+  @keyframes aWipeDown{ 0%{transform:translateY(-16px);opacity:0} 12%{opacity:.85} 88%{opacity:.85} 100%{transform:translateY(40px);opacity:0} }
+  @keyframes aWipeX  { 0%,100%{transform:translateX(-12px)} 50%{transform:translateX(12px)} }
+  @keyframes aSpin   { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  @keyframes aLift   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+  @keyframes aToRight{ 0%,100%{transform:translateX(0)} 50%{transform:translateX(9px)} }
+  @keyframes aToLeft { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-9px)} }
+  @keyframes aFill   { 0%{transform:scaleY(.1)} 55%{transform:scaleY(1)} 100%{transform:scaleY(1)} }
+  @keyframes aFlow   { to{ stroke-dashoffset:-28 } }
+  @keyframes aSeq    { 0%,100%{opacity:.15} 50%{opacity:1} }
+
+  /* ===== Accesibilidad: barra de botones ===== */
+  .a11y-bar{
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin: 0 0 14px;
+  }
+  .a11y-btn{
+    font-family:inherit; font-size: clamp(14px,2.3vw,16px); font-weight:bold;
+    padding:10px 14px; border-radius:12px; cursor:pointer;
+    background:#ffffff; color:var(--acento); border:2px solid var(--acento);
+    display:inline-flex; align-items:center; gap:6px; -webkit-tap-highlight-color:transparent;
+  }
+  .a11y-btn[aria-pressed="true"]{ background:var(--acento); color:#fff; }
+  .a11y-btn:active{ transform:translateY(1px); }
+
+  /* Texto grande */
+  body.grande .title { font-size: clamp(30px,5.6vw,42px); }
+  body.grande .text  { font-size: clamp(23px,4.2vw,30px); }
+  body.grande .btn   { font-size: clamp(22px,4vw,28px); }
+  body.grande .kicker{ font-size: clamp(20px,3.6vw,26px); }
+  body.grande .aviso { font-size: clamp(16px,2.8vw,19px); }
+  body.grande .timer-now{ font-size: clamp(22px,4vw,28px); }
+  body.grande .t-btn { font-size: clamp(20px,3.6vw,26px); }
+
+  /* Alto contraste */
+  body.contraste{
+    --bg1:#000; --bg2:#000; --card:#0c0c0c; --texto:#ffffff; --suave:#ffe600;
+    --acento:#ffe600; --acento2:#36e0ff; --acento-cl:#101010; --borde:#ffffff;
+    --aviso-bg:#1a1400; --aviso-bd:#ffe600;
+    background:#000;
+  }
+  body.contraste header h1{ text-shadow:none; }
+  body.contraste .card{ border:2px solid #fff; }
+  body.contraste .kicker{ color:#000; }
+  body.contraste .btn{ color:#000; }
+  body.contraste .t-btn{ color:#000; }
+  body.contraste .a11y-btn{ background:#000; color:var(--acento); }
+  body.contraste .a11y-btn[aria-pressed="true"]{ background:var(--acento); color:#000; }
+  body.contraste .btn-volver{ background:#000; }
+
+  /* Botón secundario: Volver al inicio */
+  .btn-volver{
+    width:100%; margin-top:12px; font-family:inherit; font-weight:bold;
+    font-size: clamp(17px,3vw,21px); padding:14px; border-radius:14px;
+    background:#fff; color:var(--acento); border:2px solid var(--acento);
+    cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .btn-volver:active{ transform:translateY(2px); }
+
+  /* Ayuda visual: resaltar el botón Siguiente */
+  #next:not(:disabled){ animation: glow 1.8s ease-in-out infinite; }
+  @keyframes glow{
+    0%,100%{ box-shadow: 0 6px 0 rgba(8,70,70,.35); }
+    50%    { box-shadow: 0 6px 0 rgba(8,70,70,.35), 0 0 0 7px rgba(11,110,110,.22); }
+  }
+
+  /* ===== Cronómetro guiado (paso 12) ===== */
+  .timer{
+    margin-top:20px; padding:18px; border-radius:18px;
+    background: var(--acento-cl); border:2px solid var(--acento);
+    transition: background .15s, transform .15s;
+  }
+  .timer.tick{ background:#bff0d8; transform:scale(1.03); }
+  .timer.done{ background:#d6f5e0; }
+  .timer-now { font-size: clamp(19px,3.6vw,24px); font-weight:bold; color:var(--texto); min-height:1.5em; }
+  .timer-time{ font-size: clamp(50px,13vw,76px); font-weight:bold; color:var(--acento); line-height:1.05; }
+  .timer-time small{ font-size:.28em; color:var(--suave); margin-left:4px; }
+  .timer-bar { height:12px; background:#cfe3df; border-radius:99px; overflow:hidden; margin:8px 0; }
+  .timer-fill{ height:100%; width:0%; background:linear-gradient(90deg,var(--acento),var(--acento2)); transition:width .9s linear; }
+  .timer-sub { font-size: clamp(14px,2.6vw,17px); color:var(--suave); margin-bottom:14px; }
+  .timer-ctrls{ display:flex; gap:10px; }
+  .t-btn{
+    flex:1; font-family:inherit; font-size: clamp(17px,3.2vw,22px); font-weight:bold;
+    padding:14px; border:none; border-radius:14px; cursor:pointer; color:#fff;
+    background:linear-gradient(180deg,#0c7a7a,var(--acento));
+    box-shadow:0 5px 0 rgba(8,70,70,.35); -webkit-tap-highlight-color:transparent;
+  }
+  .t-btn.t-reset{ background:#7c8a96; box-shadow:0 5px 0 rgba(0,0,0,.2); }
+  .t-btn:active{ transform:translateY(3px); box-shadow:none; }
+
+  /* Botón Automático activo */
+  .a11y-btn.on{ background:var(--acento); color:#fff; }
+  body.contraste .a11y-btn.on{ background:var(--acento); color:#000; }
+
+  /* ===== Panel de Ajustes (modal) ===== */
+  .modal-bg{
+    position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.55);
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:20px; overflow:auto;
+  }
+  .modal-bg[hidden]{ display:none; }
+  .modal{
+    background:var(--card); color:var(--texto); border-radius:20px;
+    padding:22px 22px 26px; max-width:560px; width:100%; box-shadow:var(--sombra);
+    border:1px solid var(--borde);
+  }
+  .modal h2{ margin:0 0 8px; color:var(--acento); font-size:clamp(22px,4.4vw,30px); }
+  .set-row{
+    display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center;
+    justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--borde);
+  }
+  .set-label{ font-size:clamp(16px,3vw,19px); font-weight:bold; }
+  .seg{ display:inline-flex; gap:6px; flex-wrap:wrap; }
+  .seg button, .stepper button{
+    font-family:inherit; font-weight:bold; font-size:clamp(15px,2.7vw,18px);
+    padding:10px 14px; border-radius:10px; border:2px solid var(--acento);
+    background:#fff; color:var(--acento); cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .seg button.active{ background:var(--acento); color:#fff; }
+  .seg button:active, .stepper button:active{ transform:translateY(1px); }
+  .stepper{ display:inline-flex; align-items:center; gap:10px; }
+  .stepper > span{ font-size:clamp(18px,3.4vw,23px); font-weight:bold; }
+  .stepper .unit{ font-size:clamp(13px,2.4vw,16px); color:var(--suave); font-weight:normal; }
+  .stepper button{ width:48px; height:48px; font-size:26px; padding:0; line-height:1; }
+  .modal-close{
+    width:100%; margin-top:18px; font-family:inherit; font-weight:bold;
+    font-size:clamp(18px,3.4vw,22px); padding:16px; border:none; border-radius:14px;
+    background:linear-gradient(180deg,#0c7a7a,var(--acento)); color:#fff; cursor:pointer;
+  }
+  .vsel{
+    font-family:inherit; font-size:clamp(14px,2.6vw,17px); padding:9px 10px;
+    border-radius:10px; border:2px solid var(--acento); background:#fff;
+    color:var(--texto); max-width:200px;
+  }
+  .set-note{
+    font-size:clamp(13px,2.4vw,15px); color:#6b5114; line-height:1.5;
+    background:var(--aviso-bg); border:1px solid var(--aviso-bd);
+    border-radius:10px; padding:10px 12px; margin:10px 0 0;
+  }
+  body.contraste .modal{ border:2px solid #fff; }
+  body.contraste .seg button, body.contraste .stepper button{ background:#000; }
+  body.contraste .seg button.active{ background:var(--acento); color:#000; }
+  body.contraste .modal-close{ color:#000; }
+  body.contraste .vsel{ background:#000; color:#fff; }
+
+  /* ===== Aviso de inicio ===== */
+  .warning-bg{
+    position:fixed; inset:0; z-index:100; background:rgba(10,25,40,.78);
+    display:flex; align-items:center; justify-content:center; padding:20px; overflow:auto;
+  }
+  .warning-bg.hide{ display:none; }
+  .warning{
+    background:#fff; border-radius:22px; max-width:560px; width:100%;
+    padding:26px 24px 28px; box-shadow:var(--sombra); text-align:center;
+    border-top:12px solid var(--aviso-bd);
+  }
+  .warning-ico{ font-size:52px; line-height:1; }
+  .warning h2{ margin:6px 0 14px; color:var(--acento); font-size:clamp(24px,5vw,32px); }
+  .warning p{ font-size:clamp(16px,3.1vw,20px); color:var(--texto); margin:0 0 14px; line-height:1.55; }
+  .warning .w-strong{
+    font-weight:bold; background:var(--aviso-bg); border:1px solid var(--aviso-bd);
+    border-radius:12px; padding:12px 14px; color:#6b5114;
+  }
+  .warning-btn{
+    width:100%; margin-top:6px; font-family:inherit; font-weight:bold;
+    font-size:clamp(19px,3.6vw,24px); padding:18px; border:none; border-radius:16px;
+    background:linear-gradient(180deg,#0c7a7a,var(--acento)); color:#fff; cursor:pointer;
+    box-shadow:0 6px 0 rgba(8,70,70,.35); -webkit-tap-highlight-color:transparent;
+  }
+  .warning-btn:active{ transform:translateY(3px); box-shadow:0 3px 0 rgba(8,70,70,.35); }
+  body.export .warning-bg{ display:none !important; }
+
+  /* ===== Menú principal (elegir Paso a paso / Videos) ===== */
+  .nav.nav-top{ margin-top:0; margin-bottom:14px; }
+
+  .menu-bg{
+    position:fixed; inset:0; z-index:90; background:rgba(10,25,40,.78);
+    display:flex; align-items:center; justify-content:center; padding:20px; overflow:auto;
+  }
+  .menu-bg[hidden]{ display:none; }
+  .menu{
+    background:#fff; border-radius:22px; max-width:560px; width:100%;
+    padding:26px 24px 28px; box-shadow:var(--sombra); text-align:center;
+    border-top:12px solid var(--acento);
+  }
+  .menu h2{ margin:4px 0 6px; color:var(--acento); font-size:clamp(22px,4.6vw,30px); }
+  .menu .menu-lead{ margin:0 0 18px; color:var(--suave); font-size:clamp(15px,2.8vw,18px); }
+  .menu-card{
+    position:relative; width:100%; margin:0 0 14px; font-family:inherit; text-align:left;
+    cursor:pointer; background:var(--card); border:2px solid var(--acento); border-radius:18px;
+    padding:18px; display:flex; align-items:center; gap:16px; -webkit-tap-highlight-color:transparent;
+  }
+  .menu-card:active{ transform:translateY(2px); }
+  .menu-card .menu-ico{ font-size:42px; line-height:1; flex:0 0 auto; }
+  .menu-card .menu-txt{ display:flex; flex-direction:column; }
+  .menu-card .menu-title{ font-size:clamp(20px,4vw,26px); font-weight:bold; color:var(--texto); }
+  .menu-card .menu-sub{ font-size:clamp(14px,2.6vw,17px); color:var(--suave); }
+  .menu-card.menu-soon{ border-color:var(--aviso-bd); }
+  .menu-card .menu-badge{
+    position:absolute; top:-11px; right:14px; background:var(--aviso-bd); color:#5a3f06;
+    font-weight:bold; font-size:clamp(12px,2.2vw,14px); padding:4px 12px; border-radius:99px;
+  }
+
+  /* ===== Pantalla "Próximamente" (Videos) ===== */
+  .soon-bg{
+    position:fixed; inset:0; z-index:95; background:rgba(10,25,40,.85);
+    display:flex; align-items:center; justify-content:center; padding:20px; overflow:auto;
+  }
+  .soon-bg[hidden]{ display:none; }
+  .soon{
+    background:#fff; border-radius:22px; max-width:520px; width:100%;
+    padding:30px 24px; box-shadow:var(--sombra); text-align:center;
+    border-top:12px solid var(--acento);
+  }
+  .soon-ico{ font-size:60px; line-height:1; }
+  .soon h2{ margin:8px 0 12px; color:var(--acento); font-size:clamp(24px,5vw,32px); }
+  .soon-strong{
+    display:inline-block; font-weight:bold; background:var(--aviso-bg);
+    border:1px solid var(--aviso-bd); border-radius:99px; padding:8px 22px;
+    color:#6b5114; font-size:clamp(18px,3.6vw,22px); margin:0 0 16px;
+  }
+  .soon p{ font-size:clamp(15px,3vw,19px); color:var(--texto); line-height:1.55; margin:0 0 14px; }
+
+  body.export .menu-bg, body.export .soon-bg{ display:none !important; }
+
+  body.contraste .menu, body.contraste .soon{ background:#0c0c0c; color:#fff; border-top-color:var(--acento); }
+  body.contraste .menu-card{ background:#000; }
+  body.contraste .menu-card .menu-title{ color:#fff; }
+
+  /* ===== Modo exportar imagen (para el pitch): ?export=1&paso=N ===== */
+  body.export{ padding:28px; }
+  body.export header, body.export .a11y-bar, body.export .progress-wrap,
+  body.export .nav, body.export .btn-volver, body.export .hint, body.export .aviso{ display:none !important; }
+  body.export .app{ min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  body.export .viewport{ overflow:visible; width:100%; }
+  body.export .track{ transform:none !important; display:block; }
+  body.export .slide{ display:none; padding:0; }
+  body.export .slide.active{ display:block; width:100%; }
+  body.export .slide.active *{ animation:none !important; }
+
+  @media (prefers-reduced-motion: reduce){
+    .slide.active *{ animation: none !important; }
+    #next{ animation: none !important; }
+    .track, .progress-fill, .timer-fill, .timer{ transition: none; }
+  }
+  @media (min-width:700px){ .card{ padding: 32px; } }
+</style>
+</head>
+<body>
+
+  <!-- Aviso de inicio (lo primero que se ve) -->
+  <div class="warning-bg" id="warning">
+    <div class="warning">
+      <div class="warning-ico">⚠️</div>
+      <h2>Antes de empezar</h2>
+      <p class="w-strong">Esta guía es para hacerse <u>acompañado de otra persona</u>, no para uso personal.</p>
+      <p>La idea es que <b>alguien lea y le vaya dictando los pasos</b> al paciente, porque el paciente <b>no debe tocar el celular</b> (por las bacterias). Una persona lee y la otra realiza los pasos. <b>No es para autouso.</b></p>
+      <p>Además, es una <b>guía de ayuda no oficial</b> y <b>solo ilustrativa</b>: no sustituye las indicaciones médicas y no significa que sea lo recomendado para todos los pacientes. <b>Consulta a tu médico antes de usarla.</b></p>
+      <button class="warning-btn" id="warning-ok">Entendido, continuar</button>
+    </div>
+  </div>
+
+  <!-- Menú principal: elegir cómo ver la guía -->
+  <div class="menu-bg" id="menu" hidden>
+    <div class="menu">
+      <h2>Diálisis</h2>
+      <p class="menu-lead">¿Cómo quieres ver la guía?</p>
+
+      <button class="menu-card" id="go-pasos">
+        <span class="menu-ico">📋</span>
+        <span class="menu-txt">
+          <span class="menu-title">Paso a paso</span>
+          <span class="menu-sub">Instrucciones con dibujos, una por una</span>
+        </span>
+      </button>
+
+      <button class="menu-card menu-soon" id="go-videos">
+        <span class="menu-badge">Próximamente</span>
+        <span class="menu-ico">🎬</span>
+        <span class="menu-txt">
+          <span class="menu-title">Videos</span>
+          <span class="menu-sub">Disponible más adelante</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pantalla Videos: próximamente -->
+  <div class="soon-bg" id="videos" hidden>
+    <div class="soon">
+      <div class="soon-ico">🎬</div>
+      <h2>Videos</h2>
+      <p class="soon-strong">Próximamente</p>
+      <p>Esta sección estará disponible más adelante. Por ahora puedes usar la guía <b>paso a paso</b>.</p>
+      <button class="warning-btn" id="videos-back">← Volver al menú</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>Pasos de la Diálisis</h1>
+    <p>Guía visual<sup>*</sup> &middot; usa los botones o desliza con el dedo</p>
+  </header>
+
+  <div class="app" id="app">
+
+    <div class="nav nav-top">
+      <button class="btn" id="prev"><span class="flecha">◀</span> Anterior</button>
+      <button class="btn" id="next">Siguiente <span class="flecha">▶</span></button>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+      <div class="progress-text" id="ptext">Paso 1 de 40</div>
+    </div>
+
+    <div class="viewport" id="viewport">
+      <div class="track" id="track"></div>
+    </div>
+
+    <button class="btn-volver" id="volver">↺ Volver al menú</button>
+
+    <p class="hint">También puedes usar las flechas ◀ ▶ del teclado</p>
+
+    <p class="aviso">
+      <b>* Aviso importante:</b> Esta guía es <b>solo ilustrativa</b> y una ayuda visual.
+      No sustituye las indicaciones médicas y <b>no significa que sea lo recomendado para todos los pacientes</b>.
+      Cada caso es diferente: ante cualquier duda, consulta siempre a tu doctor.
+    </p>
+  </div>
+
+<script>
+/* =========================================================
+   ICONOS ANIMADOS (SVG). Se reemplazan solos cuando pongas
+   las imágenes reales en la carpeta  img/  con estos nombres:
+   img/paso00.png, img/paso01.png, ... img/paso26.png
+   ========================================================= */
+const S = '<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">';
+const E = '</svg>';
+
+const I = {
+  calentar: S+'<rect x="34" y="44" width="32" height="40" rx="6"/><path d="M45 44v-6h10v6"/><line x1="50" y1="84" x2="50" y2="90"/>'+
+    '<path class="a-rise" d="M40 18q-6 6 0 12q6 6 0 12"/>'+
+    '<path class="a-rise" style="animation-delay:.5s" d="M50 14q-6 6 0 12q6 6 0 12"/>'+
+    '<path class="a-rise" style="animation-delay:1s" d="M60 18q-6 6 0 12q6 6 0 12"/>'+E,
+
+  mascara: S+'<g class="a-breath"><path d="M22 40h56v16q0 16-28 22q-28-6-28-22z"/><line x1="22" y1="46" x2="78" y2="46"/><line x1="22" y1="54" x2="78" y2="54"/><path d="M22 42l-10-6"/><path d="M78 42l10-6"/><path d="M22 56l-10 6"/><path d="M78 56l10 6"/></g>'+E,
+
+  presion: S+'<path class="a-beat" d="M50 80C24 60 24 34 40 32c7-1 10 6 10 8 0-2 3-9 10-8 16 2 16 28-10 48z"/><path d="M28 54h10l4-10 6 18 4-8h12"/>'+E,
+
+  manos1: S+'<path d="M28 66q22 16 44 0"/><path d="M32 66V52M42 66V44M50 66V42M58 66V44M68 66V52"/>'+
+    '<circle class="a-drop" cx="40" cy="28" r="2.6" fill="currentColor"/>'+
+    '<circle class="a-drop" style="animation-delay:.5s" cx="50" cy="24" r="2.6" fill="currentColor"/>'+
+    '<circle class="a-drop" style="animation-delay:1s" cx="60" cy="28" r="2.6" fill="currentColor"/>'+E,
+
+  botella: S+'<path d="M42 18h16v10l6 10v40a6 6 0 0 1-6 6H42a6 6 0 0 1-6-6V38l6-10z"/>'+
+    '<rect class="a-wipe-down" x="38" y="30" width="24" height="7" rx="3" fill="currentColor" opacity=".45" stroke="none"/>'+
+    '<circle class="a-drop" style="animation-delay:1s" cx="50" cy="86" r="2.6" fill="currentColor"/>'+E,
+
+  manos2: S+'<path d="M26 64q24 18 48 0"/><path d="M30 64V50M40 64V42M50 64V40M60 64V42M70 64V50"/>'+
+    '<circle class="a-rise" cx="38" cy="36" r="4"/>'+
+    '<circle class="a-rise" style="animation-delay:.6s" cx="50" cy="32" r="5"/>'+
+    '<circle class="a-rise" style="animation-delay:1.1s" cx="62" cy="36" r="4"/>'+E,
+
+  mesa: S+'<rect x="22" y="46" width="56" height="12" rx="3"/><line x1="28" y1="58" x2="28" y2="80"/><line x1="72" y1="58" x2="72" y2="80"/>'+
+    '<rect class="a-wipe-x" x="42" y="34" width="16" height="8" rx="2" fill="currentColor" opacity=".5" stroke="none"/>'+E,
+
+  gancho: S+'<g class="a-swing"><path d="M50 22v26a14 14 0 1 1-14 14"/><circle cx="50" cy="20" r="4"/></g>'+E,
+
+  tapon: S+'<g class="a-breath"><rect x="40" y="40" width="20" height="36" rx="4"/><rect x="36" y="28" width="28" height="14" rx="4"/><line x1="50" y1="48" x2="50" y2="68"/></g>'+E,
+
+  bolsa: S+'<path d="M36 22h28v44a8 8 0 0 1-8 8H44a8 8 0 0 1-8-8z"/><line x1="44" y1="18" x2="44" y2="22"/><line x1="56" y1="18" x2="56" y2="22"/><line x1="50" y1="74" x2="50" y2="78"/>'+
+    '<circle class="a-drop" cx="50" cy="84" r="3" fill="currentColor"/>'+E,
+
+  organizador: S+'<g class="a-breath"><rect x="22" y="36" width="56" height="34" rx="5"/><line x1="40" y1="36" x2="40" y2="70"/><line x1="60" y1="36" x2="60" y2="70"/></g>'+E,
+
+  cateter: S+'<rect x="40" y="20" width="20" height="16" rx="3"/><path class="a-flow" d="M50 36v14q0 8-8 10l-8 4q-8 4-8 12"/><circle cx="26" cy="80" r="4"/>'+E,
+
+  reloj: S+'<circle cx="50" cy="50" r="26"/><g class="a-spin pivot" style="transform-origin:50px 50px"><line x1="50" y1="50" x2="50" y2="34"/><line x1="50" y1="50" x2="62" y2="58"/></g>'+E,
+
+  servilleta: S+'<g class="a-breath"><rect x="28" y="28" width="44" height="44" rx="3"/><line x1="50" y1="28" x2="50" y2="72"/><line x1="28" y1="50" x2="72" y2="50"/></g>'+E,
+
+  abrirtapon: S+'<rect x="40" y="46" width="20" height="30" rx="4"/><rect class="a-lift" x="36" y="24" width="28" height="12" rx="4"/>'+E,
+
+  colgar: S+'<line x1="30" y1="16" x2="70" y2="16"/><g class="a-swing"><line x1="50" y1="16" x2="50" y2="26"/><path d="M40 26h20v34a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8z"/><line x1="50" y1="68" x2="50" y2="80"/></g>'+E,
+
+  cateterorg: S+'<rect x="22" y="58" width="56" height="22" rx="4"/><path class="a-flow" d="M50 58V40q0-10-10-12"/><circle cx="38" cy="26" r="4"/>'+E,
+
+  gota: S+'<path class="a-drop" d="M50 22c10 14 18 22 18 32a18 18 0 1 1-36 0c0-10 8-18 18-32z" fill="currentColor" stroke="none"/>'+E,
+
+  conectar: S+'<g class="a-toright"><line x1="14" y1="50" x2="40" y2="50"/><rect x="40" y="42" width="9" height="16" rx="2"/></g>'+
+    '<g class="a-toleft"><rect x="51" y="42" width="9" height="16" rx="2"/><line x1="60" y1="50" x2="86" y2="50"/></g>'+E,
+
+  prensaabrir: S+'<line x1="20" y1="50" x2="80" y2="50"/><path class="a-toleft" d="M38 38l-8 12 8 12"/><path class="a-toright" d="M62 38l8 12-8 12"/>'+E,
+
+  drenar: S+'<line x1="50" y1="18" x2="50" y2="40"/><path d="M42 40h16l-2 6H44z"/>'+
+    '<circle class="a-drop" cx="50" cy="52" r="3" fill="currentColor"/>'+
+    '<circle class="a-drop" style="animation-delay:.8s" cx="50" cy="52" r="3" fill="currentColor"/>'+
+    '<path d="M30 70h40v8a6 6 0 0 1-6 6H36a6 6 0 0 1-6-6z"/>'+E,
+
+  contar5: S+'<circle cx="50" cy="50" r="26"/><text class="a-beat" x="50" y="62" font-size="30" font-family="Verdana" font-weight="bold" text-anchor="middle" stroke="none" fill="currentColor">5</text>'+E,
+
+  secuencia: S+'<circle cx="26" cy="50" r="11"/><circle class="a-seq" cx="26" cy="50" r="6" fill="currentColor" stroke="none"/>'+
+    '<circle cx="50" cy="50" r="11"/><circle class="a-seq" style="animation-delay:.6s" cx="50" cy="50" r="6" fill="currentColor" stroke="none"/>'+
+    '<circle cx="74" cy="50" r="11"/><circle class="a-seq" style="animation-delay:1.2s" cx="74" cy="50" r="6" fill="currentColor" stroke="none"/>'+E,
+
+  limpioentra: S+'<path d="M40 22h20v40a10 10 0 0 1-20 0z"/><line x1="50" y1="62" x2="50" y2="70"/>'+
+    '<circle class="a-drop" cx="50" cy="74" r="3" fill="currentColor"/>'+
+    '<path d="M32 86h36"/>'+E,
+
+  prensacerrar: S+'<line x1="20" y1="50" x2="80" y2="50"/><path class="a-toright" d="M34 40v20"/><path class="a-toleft" d="M66 40v20"/><circle cx="32" cy="50" r="2.6" fill="currentColor"/><circle cx="68" cy="50" r="2.6" fill="currentColor"/>'+E,
+
+  desconectar: S+'<g class="a-toleft"><line x1="12" y1="50" x2="34" y2="50"/><rect x="34" y="42" width="9" height="16" rx="2"/></g>'+
+    '<g class="a-toright"><rect x="57" y="42" width="9" height="16" rx="2"/><line x1="66" y1="50" x2="88" y2="50"/></g>'+
+    '<path class="a-drop" d="M50 28l-3 5h6z" fill="currentColor" stroke="none"/>'+E,
+
+  medir: S+'<path d="M34 36h22l-4 38a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6z"/>'+
+    '<rect class="a-fill" x="37" y="52" width="14" height="26" fill="currentColor" opacity=".5" stroke="none"/>'+
+    '<rect x="58" y="34" width="22" height="30" rx="3"/><line x1="63" y1="44" x2="75" y2="44"/><line x1="63" y1="52" x2="75" y2="52"/>'+E,
+
+  secar: S+'<path d="M30 30h40v28a6 6 0 0 1-6 6H36a6 6 0 0 1-6-6z"/>'+
+    '<line x1="38" y1="64" x2="38" y2="72"/><line x1="50" y1="64" x2="50" y2="74"/><line x1="62" y1="64" x2="62" y2="72"/>'+
+    '<path class="a-wipe-x" d="M42 44h16"/>'+E,
+
+  rezo: S+'<path d="M47 78V42c0-9-7-15-9-23 5 0 9 5 9 12v47z"/><path d="M53 78V42c0-9 7-15 9-23-5 0-9 5-9 12v47z"/>'+
+    '<line x1="40" y1="78" x2="60" y2="78"/>'+E,
+
+  basura: S+'<path d="M33 36h34l-3 40a6 6 0 0 1-6 6H42a6 6 0 0 1-6-6z"/><line x1="28" y1="36" x2="72" y2="36"/>'+
+    '<path d="M42 36v-5h16v5"/>'+
+    '<line x1="44" y1="46" x2="45" y2="74"/><line x1="50" y1="46" x2="50" y2="74"/><line x1="56" y1="46" x2="55" y2="74"/>'+E
+};
+
+/* =========================================================
+   PASOS
+   ========================================================= */
+const pasos = [
+  { t:"Calentar la bolsa", i:I.calentar,
+    x:"Una hora antes de empezar, pon a calentar la bolsa con el reloj hacia abajo, para que esté a la temperatura del cuerpo. Nunca uses la bolsa fría." },
+  { t:"Pelo recogido y mascarilla", i:I.mascara,
+    x:"Recógete el pelo y ponte la mascarilla (cubrebocas)." },
+  { t:"Limpiar la manija del lavabo", i:I.mesa,
+    x:"Antes del lavado de manos, con una servilleta o papel y alcohol, limpia la manija o llave del lugar donde te vas a lavar las manos." },
+  { t:"Lavado de manos sencillo", i:I.manos1,
+    x:"Lávate las manos de forma sencilla con agua y jabón. No sacudas las manos." },
+  { t:"Limpiar la botella de alcohol", i:I.botella,
+    x:"Con una servilleta doblada a la mitad y alcohol, limpia la botella de alcohol." },
+  { t:"Lavado de manos completo", i:I.manos2,
+    x:"Primero mójate hasta el codo. Luego lava en orden: palmas, dorsos, entre los dedos por abajo, entre los dedos por arriba, los dedos uno por uno, las uñas, las yemas una por una, y el brazo hasta el codo con movimiento circular." },
+  { t:"Secar manos y brazos", i:I.secar,
+    x:"Seca primero una mano completa (palma, dorso y entre los dedos) y luego ese brazo, de la muñeca al codo. Después haz lo mismo con la otra mano y el otro brazo." },
+  { t:"Limpiar la mesa", i:I.mesa,
+    x:"Con una servilleta doblada en 4 y alcohol: limpia arriba con un lado, dale vuelta y limpia el centro, ábrela y limpia abajo, y dale vuelta para limpiar el borde." },
+  { t:"Limpiar el gigante", i:I.gancho,
+    x:"Igual, con la servilleta doblada en 4: limpia un lado arriba, dale vuelta para el tubo, ábrela y limpia el resto del tubo." },
+  { t:"Limpiar el tapón de yodo", i:I.tapon,
+    x:"Échale alcohol al tapón de yodo y sécalo con una servilleta. Déjalo en la esquina de la mesa." },
+  { t:"Limpiar la bolsa de suero", i:I.bolsa,
+    x:"Con servilleta a la mitad y alcohol: agarra la bolsa de arriba y límpiala de arriba hacia abajo. No la agarres de abajo. Ponla en la mesa y limpia la parte de arriba, de donde la agarraste." },
+  { t:"Lavar el organizador", i:I.organizador,
+    x:"Lava el organizador con agua y jabón. Asegúrate de que las «orejas» queden hacia afuera. Sécalo con toallas y colócalo con el círculo viendo hacia el paciente, bien en la orilla." },
+  { t:"Limpiar el catéter", i:I.cateter,
+    x:"Con servilleta con alcohol doblada en 4: agarra el tubo azul (cerca del paciente) con una mano y, con la otra, límpialo de arriba hacia abajo con fuerza. Luego agarra el tubo cerca del tapón y limpia bien el tapón." },
+  { t:"Envolver el tapón", i:I.servilleta,
+    x:"Envuelve el tapón en una servilleta y déjalo encima de la ropa del paciente." },
+  { t:"Limpiar la botella de alcohol otra vez", i:I.botella,
+    x:"Limpia de nuevo la botella de alcohol, de arriba hacia abajo, para volver a ponerla en la mesa." },
+  { t:"Lavado de manos guiado", i:I.reloj, timer:true,
+    x:"Mójate primero hasta el codo. Luego lava 30 segundos cada parte: palmas, dorsos, entre los dedos por el frente, entre los dedos por el dorso, los dedos de cada mano, las uñas, las yemas, y el brazo de cada lado hasta el codo. Usa el cronómetro: cambia de color cada 30 segundos." },
+  { t:"Secar después del lavado", i:I.secar,
+    x:"Para escurrir, sube las manos y deja escurrir; no las muevas. Seca bien una mano, luego ese brazo, después la otra mano y por último el otro brazo." },
+  { t:"Tomar la servilleta (posición de rezo)", i:I.rezo,
+    x:"Agarra la servilleta y mantén las manos juntas (como rezando) para no contaminarlas." },
+  { t:"Abrir el tapón del yodo", i:I.abrirtapon,
+    x:"Abre el tapón del yodo y conéctalo en el organizador, con la parte café hacia adentro." },
+  { t:"Abrir y colgar la bolsa", i:I.colgar,
+    x:"Abre la bolsa jalando hacia abajo con fuerza. Agárrala bien de la manguera para que no se caiga. Ponla en la mesa con el reloj hacia el paciente y viendo hacia arriba. Cuélgala con cuidado, sin dejar caer nada." },
+  { t:"Colocar el reloj en el organizador", i:I.organizador,
+    x:"Estira todo y pon el reloj en el organizador, con lo amarillo hacia el frente y las mangueras a los lados." },
+  { t:"Bolsa de residuos al piso", i:I.drenar,
+    x:"Estira la bolsa de residuos y ponla en el piso." },
+  { t:"Conectar el catéter al organizador", i:I.cateterorg,
+    x:"Agarra la punta del catéter sin tocar la servilleta, deja caer la servilleta y conéctalo al organizador." },
+  { t:"Ponerse alcohol", i:I.gota,
+    x:"Ponte alcohol en las manos." },
+  { t:"Desenroscar amarillo y catéter", i:I.desconectar,
+    x:"Al mismo tiempo, desenrosca lo amarillo y el catéter ya conectado." },
+  { t:"Colocar el catéter", i:I.conectar,
+    x:"Pon el catéter donde estaba lo amarillo." },
+  { t:"Retirar el catéter viejo", i:I.desconectar,
+    x:"Con lo amarillo, retira el catéter viejo." },
+  { t:"Abrir la prensa para drenar", i:I.prensaabrir,
+    x:"Abre la prensa del tubo para retirar el líquido. Mueve la prensa en el tubo un poco hacia el organizador o hacia arriba para que salga el líquido." },
+  { t:"Drenar el líquido (esperar)", i:I.drenar, wait:true,
+    x:"Abre la prensa para que empiece a salir el líquido. Espera a que salga todo y cierra la prensa al terminar. Este paso tarda varios minutos." },
+  { t:"Sacar el aire de la bolsa", i:I.contar5,
+    x:"Saca el aire de la bolsa: pasa al 2 y cuenta hasta 5." },
+  { t:"Pasar las bolitas en orden", i:I.secuencia,
+    x:"Pasa a la bolita blanca. Despacio a la media luna. Despacio a la tercera opción." },
+  { t:"Dejar entrar el líquido limpio (esperar)", i:I.limpioentra, wait:true,
+    x:"Abre la prensa blanca del catéter; el líquido empieza a entrar al peritoneo. Este paso tarda varios minutos." },
+  { t:"Mantener la servilleta hasta el vacío", i:I.rezo,
+    x:"Mantén las manos con la servilleta (posición de rezo) hasta que la bolsa dé el vacío (se termine)." },
+  { t:"Cerrar la prensa", i:I.prensacerrar,
+    x:"Cierra la prensa. Pasa el reloj por las 4 bolitas hasta la última bolita." },
+  { t:"Ponerse alcohol", i:I.gota,
+    x:"Ponte alcohol en las manos." },
+  { t:"Desenroscar el yodo nuevo y el catéter", i:I.desconectar,
+    x:"Desenrosca un poco el yodo nuevo y luego, al mismo tiempo, desenrosca el yodo y el catéter." },
+  { t:"Conectar al yodo nuevo", i:I.conectar,
+    x:"Mete el tubo del catéter en el yodo nuevo. Enrosca bien y entrégaselo al paciente." },
+  { t:"Tubo blanco al organizador", i:I.cateterorg,
+    x:"Pon el tubo blanco en el centro del organizador." },
+  { t:"Medir y anotar", i:I.medir,
+    x:"Mide el líquido desechado: corta la bolsa y mídelo. Si hay espuma, muévela para quitarla. Vacía el líquido en el servicio sanitario. Anota cuánto salió (idealmente 2 L de la bolsa pasada)." },
+  { t:"Recoger y lavarse las manos", i:I.basura,
+    x:"Recoge la basura del lugar y lávate las manos." }
+];
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+const TIMER_HTML =
+  '<div class="timer" id="timer">'+
+    '<div class="timer-now" id="t-now">Listo para empezar</div>'+
+    '<div class="timer-time" id="t-time">5:30</div>'+
+    '<div class="timer-bar"><div class="timer-fill" id="t-fill"></div></div>'+
+    '<div class="timer-sub" id="t-sub">Lavado guiado por partes</div>'+
+    '<div class="timer-ctrls">'+
+      '<button class="t-btn" id="t-start">▶ Iniciar</button>'+
+      '<button class="t-btn t-reset" id="t-reset">↺ Reiniciar</button>'+
+    '</div>'+
+  '</div>';
+
+const WAIT_HTML =
+  '<div class="timer wait">'+
+    '<div class="timer-now t-wnow">Listo para empezar</div>'+
+    '<div class="timer-time t-wtime">20:00</div>'+
+    '<div class="timer-bar"><div class="timer-fill t-wfill"></div></div>'+
+    '<div class="timer-sub t-wsub">Este paso tarda. Mantente conectado.</div>'+
+    '<div class="timer-ctrls">'+
+      '<button class="t-btn t-wstart">▶ Iniciar</button>'+
+      '<button class="t-btn t-reset t-wreset">↺ Reiniciar</button>'+
+    '</div>'+
+  '</div>';
+
+const track = document.getElementById('track');
+pasos.forEach((p, idx) => {
+  const num = String(idx).padStart(2,'0');
+  const slide = document.createElement('div');
+  slide.className = 'slide';
+  slide.innerHTML =
+    '<div class="card">'+
+      '<span class="kicker">PASO '+(idx+1)+'</span>'+
+      '<div class="media">'+
+        '<video class="vid" muted playsinline loop preload="none" data-src="vid/paso'+num+'.mp4"></video>'+
+        '<img class="photo" alt="" data-src="img/paso'+num+'.png">'+
+        '<div class="icon">'+p.i+'</div>'+
+      '</div>'+
+      '<div class="title">'+p.t+'</div>'+
+      '<p class="text">'+p.x+'</p>'+
+      (p.timer ? TIMER_HTML : '')+
+      (p.wait ? WAIT_HTML : '')+
+    '</div>';
+  track.appendChild(slide);
+});
+const slides = Array.from(track.children);
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+const total = pasos.length;
+let i = 0;
+const fill  = document.getElementById('fill');
+const ptext = document.getElementById('ptext');
+const prev  = document.getElementById('prev');
+const next  = document.getElementById('next');
+
+function render(){
+  track.style.transform = 'translateX(-'+(i*100)+'%)';
+  fill.style.width = ((i+1)/total*100)+'%';
+  ptext.textContent = 'Paso '+(i+1)+' de '+total;
+  prev.disabled = (i === 0);
+  next.disabled = (i === total-1);
+  slides.forEach((s,k)=> s.classList.toggle('active', k===i));
+  afterRender();
+}
+function go(d){
+  const nuevo = i + d;
+  if(nuevo < 0 || nuevo >= total) return;
+  i = nuevo;
+  render();
+}
+
+prev.addEventListener('click', ()=>go(-1));
+next.addEventListener('click', ()=>go(1));
+
+document.addEventListener('keydown', e=>{
+  if(e.key === 'ArrowLeft')  go(-1);
+  if(e.key === 'ArrowRight') go(1);
+});
+
+/* Deslizar con el dedo */
+let x0 = null;
+const vp = document.getElementById('viewport');
+vp.addEventListener('touchstart', e=>{ x0 = e.touches[0].clientX; }, {passive:true});
+vp.addEventListener('touchend', e=>{
+  if(x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if(Math.abs(dx) > 45){ go(dx < 0 ? 1 : -1); }
+  x0 = null;
+});
+
+/* =========================================================
+   CONFIGURACIÓN FIJA (sin panel de ajustes)
+   ========================================================= */
+const displayMode = 'iconos';   // 'iconos' o 'video'
+const WAIT_MIN = 20;            // minutos de las esperas (drenar / llenar)
+
+/* =========================================================
+   CRONÓMETRO DE LAVADO DE 5 MIN (cambia de color cada 30 seg)
+   ========================================================= */
+const wash = [
+  { n:"Mójate las manos hasta el codo",       s:30 },
+  { n:"Frota las PALMAS",                      s:30 },
+  { n:"Frota los DORSOS",                      s:30 },
+  { n:"ENTRE LOS DEDOS · por el frente",       s:30 },
+  { n:"ENTRE LOS DEDOS · por el dorso",        s:30 },
+  { n:"Los DEDOS · mano derecha",              s:30 },
+  { n:"Los DEDOS · mano izquierda",            s:30 },
+  { n:"Las UÑAS · las dos manos",              s:30 },
+  { n:"Las YEMAS · dedo por dedo",             s:30 },
+  { n:"Brazo derecho · de la muñeca al codo",  s:30 },
+  { n:"Brazo izquierdo · de la muñeca al codo",s:30 }
+];
+const WASH_COLORS = ['#e3f2f1','#dfeefc','#fce9cf','#e6f6dd','#fbe3ec','#e2f3fb','#efe6fb','#fff0d6','#d8f3e8','#f0e8df','#dcefe6'];
+const washTotal = wash.reduce((a,b)=>a+b.s, 0);
+const tState = { running:false, elapsed:0, seg:0, segLeft:wash[0].s, id:null };
+let els = null, actx = null;
+
+function fmt(s){ const m = Math.floor(s/60), x = s%60; return m + ':' + String(x).padStart(2,'0'); }
+function beep(freq, dur){
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    o.connect(g); g.connect(actx.destination);
+    g.gain.setValueAtTime(0.0001, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, actx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur/1000);
+    o.start(); o.stop(actx.currentTime + dur/1000 + 0.02);
+  }catch(e){}
+}
+function updateTimerUI(reset){
+  if(!els) return;
+  els.now.textContent  = reset ? 'Listo para empezar' : wash[tState.seg].n;
+  els.time.textContent = fmt(reset ? washTotal : (washTotal - tState.elapsed));
+  els.fill.style.width = (tState.elapsed / washTotal * 100) + '%';
+  els.sub.textContent  = reset
+    ? ('Lavado guiado (' + fmt(washTotal) + ') · cambia de color cada 30 seg')
+    : ('Parte ' + (tState.seg+1) + ' de ' + wash.length + ' · cambia de color cada 30 seg');
+}
+function washPhase(idx){
+  if(els){
+    els.box.style.background = WASH_COLORS[idx % WASH_COLORS.length];
+    els.box.classList.add('tick'); setTimeout(()=>els.box.classList.remove('tick'), 400);
+  }
+  beep(880, 140);
+  if(navigator.vibrate) navigator.vibrate(140);
+}
+function timerStep(){
+  tState.elapsed++; tState.segLeft--;
+  if(tState.segLeft <= 0){
+    tState.seg++;
+    if(tState.seg >= wash.length){ timerDone(); return; }
+    tState.segLeft = wash[tState.seg].s;
+    washPhase(tState.seg);          // nueva parte: cambia de color + bip + voz
+  }
+  updateTimerUI();
+}
+function timerStartRun(){
+  const fresh = (tState.elapsed === 0);
+  if(fresh){ tState.seg = 0; tState.segLeft = wash[0].s; }
+  tState.running = true;
+  els.start.textContent = '⏸ Pausar';
+  els.box.classList.remove('done');
+  beep(660, 90);
+  if(fresh){ els.box.style.background = WASH_COLORS[0]; }
+  updateTimerUI();
+  tState.id = setInterval(timerStep, 1000);
+}
+function timerPause(){
+  tState.running = false; clearInterval(tState.id); tState.id = null;
+  els.start.textContent = '▶ Continuar';
+}
+function timerReset(silent){
+  tState.running = false; clearInterval(tState.id); tState.id = null;
+  tState.elapsed = 0; tState.seg = 0; tState.segLeft = wash[0].s;
+  if(els){ els.start.textContent = '▶ Iniciar'; els.box.classList.remove('done','tick'); els.box.style.background = ''; }
+  updateTimerUI(true);
+}
+function timerDone(){
+  tState.running = false; clearInterval(tState.id); tState.id = null;
+  els.now.textContent  = '¡Terminaste el lavado! 👏';
+  els.time.textContent = '✓';
+  els.fill.style.width = '100%';
+  els.sub.textContent  = 'Muy bien. Ya puedes continuar al siguiente paso.';
+  els.start.textContent = '▶ Iniciar';
+  els.box.style.background = '';
+  els.box.classList.add('done');
+  beep(660, 180); setTimeout(()=>beep(990, 260), 200);
+  if(navigator.vibrate) navigator.vibrate([150, 80, 150]);
+}
+function initTimer(){
+  const box = document.getElementById('timer');
+  if(!box) return;
+  els = {
+    box:   box,
+    now:   document.getElementById('t-now'),
+    time:  document.getElementById('t-time'),
+    fill:  document.getElementById('t-fill'),
+    sub:   document.getElementById('t-sub'),
+    start: document.getElementById('t-start')
+  };
+  els.start.addEventListener('click', ()=> tState.running ? timerPause() : timerStartRun());
+  document.getElementById('t-reset').addEventListener('click', ()=> timerReset(false));
+  updateTimerUI(true);
+}
+
+/* =========================================================
+   CRONÓMETRO DE ESPERA (pasos largos: drenar / llenar)
+   ========================================================= */
+let waitState = { running:false, left:0, total:0, id:null };
+function waitEls(){
+  const box = slides[i] ? slides[i].querySelector('.timer.wait') : null;
+  if(!box) return null;
+  return { box,
+    now:   box.querySelector('.t-wnow'),
+    time:  box.querySelector('.t-wtime'),
+    fill:  box.querySelector('.t-wfill'),
+    sub:   box.querySelector('.t-wsub'),
+    start: box.querySelector('.t-wstart') };
+}
+function setupWait(){
+  const e = waitEls(); if(!e) return;
+  const total = WAIT_MIN * 60;
+  waitState = { running:false, left:total, total:total, id:null };
+  e.now.textContent  = 'Listo para empezar';
+  e.time.textContent = fmt(total);
+  e.fill.style.width = '0%';
+  e.sub.textContent  = 'Este paso tarda ~' + WAIT_MIN + ' min. Mantente conectado.';
+  e.start.textContent = '▶ Iniciar';
+  e.box.classList.remove('done','tick');
+  e.start.onclick = ()=> waitState.running ? waitPause() : waitStart();
+  e.box.querySelector('.t-wreset').onclick = ()=> setupWait();
+}
+function waitStart(){
+  const e = waitEls(); if(!e) return;
+  waitState.running = true;
+  e.start.textContent = '⏸ Pausar';
+  e.now.textContent = 'En proceso… espera';
+  e.box.classList.remove('done');
+  beep(660, 90);
+  waitState.id = setInterval(waitTick, 1000);
+}
+function waitPause(){
+  const e = waitEls();
+  waitState.running = false; clearInterval(waitState.id); waitState.id = null;
+  if(e) e.start.textContent = '▶ Continuar';
+}
+function waitTick(){
+  const e = waitEls(); if(!e){ clearInterval(waitState.id); return; }
+  waitState.left--;
+  if(waitState.left > 0 && waitState.left % 60 === 0){
+    beep(880, 120);
+    if(navigator.vibrate) navigator.vibrate(120);
+    e.box.classList.add('tick'); setTimeout(()=>e.box.classList.remove('tick'), 350);
+  }
+  if(waitState.left <= 0){ waitFinish(); return; }
+  e.time.textContent = fmt(waitState.left);
+  e.fill.style.width = ((waitState.total - waitState.left) / waitState.total * 100) + '%';
+}
+function waitFinish(){
+  const e = waitEls();
+  waitState.running = false; clearInterval(waitState.id); waitState.id = null;
+  if(e){
+    e.now.textContent  = '¡Listo! 👏';
+    e.time.textContent = '✓';
+    e.fill.style.width = '100%';
+    e.sub.textContent  = 'Ya puedes continuar al siguiente paso.';
+    e.start.textContent = '▶ Iniciar';
+    e.box.classList.add('done');
+  }
+  beep(660, 180); setTimeout(()=>beep(990, 260), 200);
+  if(navigator.vibrate) navigator.vibrate([150, 80, 150]);
+}
+function waitClear(){ waitState.running = false; clearInterval(waitState.id); waitState.id = null; }
+
+/* =========================================================
+   MODO ICONOS / VIDEO
+   ========================================================= */
+function applyMedia(){
+  slides.forEach((s, k)=>{
+    const media = s.querySelector('.media');
+    const vid = media.querySelector('.vid');
+    const img = media.querySelector('.photo');
+    const icon = media.querySelector('.icon');
+    if(vid){ try{ vid.pause(); }catch(e){} }
+    if(k !== i){
+      if(vid) vid.style.display = 'none';
+      img.style.display = 'none';
+      icon.style.display = 'flex';
+      return;
+    }
+    // diapositiva activa
+    if(displayMode === 'video' && vid){
+      img.style.display = 'none';
+      vid.style.display = 'none'; icon.style.display = 'flex';   // por defecto icono hasta que cargue
+      if(!vid.src) vid.src = vid.dataset.src;
+      vid.onerror   = ()=>{ vid.style.display = 'none'; icon.style.display = 'flex'; };
+      vid.oncanplay = ()=>{ vid.style.display = 'block'; icon.style.display = 'none'; };
+      const pr = vid.play(); if(pr && pr.catch) pr.catch(()=>{});
+    } else {
+      if(vid) vid.style.display = 'none';
+      img.onload  = ()=>{ img.style.display = 'block'; icon.style.display = 'none'; };
+      img.onerror = ()=>{ img.style.display = 'none'; icon.style.display = 'flex'; };
+      if(!img.getAttribute('src')) img.src = img.dataset.src;
+      if(img.complete && img.naturalWidth > 0){ img.style.display = 'block'; icon.style.display = 'none'; }
+      else { img.style.display = 'none'; icon.style.display = 'flex'; }
+    }
+  });
+}
+
+function stepBtn(id, fn){ const el = document.getElementById(id); if(el) el.onclick = fn; }
+
+/* =========================================================
+   PANTALLAS: aviso (home) -> menú -> paso a paso / videos
+   ========================================================= */
+function showMenu(){
+  const m = document.getElementById('menu');   if(m) m.hidden = false;
+  const v = document.getElementById('videos');  if(v) v.hidden = true;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* Aviso de inicio: continuar -> menú */
+stepBtn('warning-ok', ()=>{
+  const w = document.getElementById('warning'); if(w) w.classList.add('hide');
+  showMenu();
+});
+
+/* Menú -> Paso a paso (revela la guía) */
+stepBtn('go-pasos', ()=>{
+  const m = document.getElementById('menu'); if(m) m.hidden = true;
+  i = 0; render(); window.scrollTo({ top:0, behavior:'smooth' });
+});
+
+/* Menú -> Videos (próximamente) */
+stepBtn('go-videos', ()=>{
+  const m = document.getElementById('menu');  if(m) m.hidden = true;
+  const v = document.getElementById('videos'); if(v) v.hidden = false;
+});
+
+/* Videos -> volver al menú */
+stepBtn('videos-back', showMenu);
+
+/* Volver al menú desde el paso a paso */
+stepBtn('volver', ()=>{ i = 0; render(); showMenu(); });
+
+/* =========================================================
+   Se ejecuta al final de cada render()
+   ========================================================= */
+function afterRender(){
+  timerReset(true);    // reinicia el lavado guiado
+  waitClear();         // detiene cualquier espera anterior
+  applyMedia();
+  if(pasos[i].wait) setupWait();
+}
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+initTimer();
+
+/* Modo exportar imagen / abrir en un paso concreto: ?export=1&paso=N */
+(function(){
+  const q = new URLSearchParams(location.search);
+  if(q.get('export') === '1') document.body.classList.add('export');
+  const ps = parseInt(q.get('paso'), 10);
+  if(!isNaN(ps) && ps >= 0 && ps < total) i = ps;
+})();
+
+render();
+</script>
+</body>
+</html>
