@@ -321,11 +321,31 @@ body[data-vista="paso"] .pie { display: none; }
   .contenedor { padding-left: 1.5rem; padding-right: 1.5rem; }
 }
 
-/* ---------- Impresión: la guía completa en papel ---------- */
+/* ---------- PDF de la guía (se genera con tools/generar-pdf.sh desde #/pasos) ---------- */
+.solo-imprimir { display: none !important; }
 @media print {
-  :root { --fondo: #fff; --texto: #000; --texto-2: #000; --acento: #000; --icono-bg: #fff; --icono-color: #000; }
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  :root, :root[data-tema] {
+    --fondo: #fff; --texto: #0E2A3B; --texto-2: #3D5361; --acento: #0A5573; --sobre-acento: #fff;
+    --icono-bg: #E3F4F7; --icono-color: #0A5573; --icono-fondo: #fff; --agua: #8FD8E3; --logo-a: #0A5573;
+    --borde: #0E2A3B; --linea: #3D5361; --escala: 1;
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .cabecera, .navegacion, .pie, .reloj-global, .no-imprimir, dialog { display: none !important; }
-  body { font-size: 12pt; }
-  .lista-pasos a { break-inside: avoid; grid-template-columns: 2rem 3rem 1fr; }
-  .lista-pasos .mini { width: 3rem; height: 3rem; border: 1px solid #000; }
+  .solo-imprimir { display: block !important; }
+  body { font-size: 11pt; }
+  .contenedor { padding: 0; max-width: none; }
+  .pila--grande { gap: 1.25rem; }
+  .titulo-seccion { font-size: 20pt; }
+  .marca-pdf { display: flex !important; align-items: center; gap: 0.5rem; font-size: 13pt; color: #0A5573; }
+  .marca-pdf svg { width: 1.8rem; height: 1.8rem; }
+  .marca-pdf b span { color: #3D5361; }
+  .marca-pdf > span { margin-left: auto; font-family: var(--mono); font-size: 10pt; color: #3D5361; }
+  .fase { break-inside: auto; }
+  .fase__titulo { break-after: avoid; }
+  .lista-pasos a { break-inside: avoid; grid-template-columns: 1.75rem 3rem 1fr; padding: 0.45rem 0; }
+  .lista-pasos .mini { width: 3rem; height: 3rem; }
+  .lista-pasos b { font-size: 12pt; }
+  .lista-pasos .resumen { font-size: 10.5pt; color: #0E2A3B; }
+  .lista-pasos .resumen b { display: inline; font-size: inherit; }
 }

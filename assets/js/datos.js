@@ -8,7 +8,9 @@
  */
 (() => {
   // Dónde viven los videos. Se cambia solo aquí si se mueven.
-  const ARCHIVO = 'https://archive.org/download/dialisisfacil/';
+  // Para probar con videos locales: localStorage.setItem('df-archivo', 'http://localhost:8643/')
+  const ARCHIVO = (() => { try { return localStorage.getItem('df-archivo'); } catch (e) { return null; } })()
+    || 'https://archive.org/download/dialisisfacil/';
 
   const FASES = [
     { n: 1, nombre: 'Preparación', desde: 1, hasta: 19 },
@@ -203,5 +205,26 @@
 
   const urlVideo = (id, calidad) => `${ARCHIVO}${id}-${calidad}.mp4`;
 
-  window.DF = { FASES, VIDEOS, PASOS, LAVADO, urlVideo };
+  // Lo que se lee en voz alta. La voz grabada (audio/) se genera con este mismo texto.
+  const textoPaso = (p) => [
+    `Paso ${p.n} de ${PASOS.length}.`, `${p.titulo}.`, p.texto,
+    p.aviso ? (p.aviso.tipo === 'alerta' ? `Atención: ${p.aviso.texto}` : `${p.aviso.texto}.`) : ''
+  ].filter(Boolean).join(' ');
+
+  // Frases sueltas de los cronómetros y la prueba de voz.
+  const AVISOS = {
+    'fin-lavado': 'Terminó el lavado de 5 minutos. Enjuague de los dedos hacia el codo.',
+    'fin-tiempo': 'Tiempo cumplido. Revise si ya terminó.',
+    prueba: 'Paso 31. Drenar. Deje salir todo el líquido usado.'
+  };
+
+  // Archivos de voz grabada: audio/paso-01.mp3, audio/lavado-01.mp3, audio/aviso-fin-lavado.mp3
+  const dos = (n) => String(n).padStart(2, '0');
+  const AUDIO = {
+    paso: (n) => `audio/paso-${dos(n)}.mp3`,
+    lavado: (i) => `audio/lavado-${dos(i + 1)}.mp3`,
+    aviso: (k) => `audio/aviso-${k}.mp3`
+  };
+
+  window.DF = { FASES, VIDEOS, PASOS, LAVADO, AVISOS, AUDIO, urlVideo, textoPaso };
 })();

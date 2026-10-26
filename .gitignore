@@ -5,3 +5,4 @@ node_modules/
 .idea/
 *.mp4
 *.part.mp4
+tools/.voz/

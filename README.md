@@ -10,11 +10,11 @@ Sitio: https://dialisisfacil.com/ · Un proyecto de [VEUX](https://veuxweb.com/e
 
 - **Mobile first y accesible:** letra Atkinson Hyperlegible, contraste AAA, botones grandes, navegación con teclado y con el dedo, y lectores de pantalla.
 - **Ajustes guardados en el dispositivo** (sin cookies): tamaño de letra, colores (claro, oscuro, alto contraste), espaciado, menos movimiento, voz y velocidad, subtítulos, calidad de video y pantalla siempre encendida.
-- **Voz:** cada paso se puede escuchar con la voz del navegador (Web Speech API), y se puede leer en automático al cambiar de paso.
+- **Voz grabada:** cada paso tiene su audio en español (`audio/`, generado con [Piper](https://github.com/rhasspy/piper), voz `es_MX-claude-high`). Si falla, usa la voz del teléfono (Web Speech API). Se puede leer en automático al cambiar de paso.
 - **Cronómetros:** el lavado de manos de 5 minutos guiado por partes, con avisos de voz y sonido, y las esperas de drenaje e infusión.
 - **Videos:** cada paso abre su parte del video. Subtítulos `.vtt` y una transcripción en la que se puede tocar cualquier frase para ir a ese momento.
 - **Sin conexión:** el texto de la guía funciona sin internet (service worker). Los videos no.
-- **Para imprimir:** «Los 42 pasos» sale bien en papel.
+- **PDF:** la guía completa para descargar en `descargas/guia-dialisis-facil.pdf`.
 
 ## Estructura
 
@@ -46,6 +46,15 @@ bash tools/comprimir-videos.sh        # necesita ffmpeg
 node tools/preparar-archive.mjs       # deja un .srt junto a cada video
 ```
 
+## Voz y PDF
+
+Cuando cambie un texto en `assets/js/datos.js`, regenere la voz y el PDF:
+
+```bash
+node tools/generar-voz.mjs     # solo graba lo que cambió (preparación en el encabezado del script)
+bash tools/generar-pdf.sh      # con la página servida en el puerto 8642
+```
+
 ## Ver la página en su computadora
 
 ```bash
@@ -64,4 +73,4 @@ Para cambiar el logo o los íconos, edite `assets/js/marca.js` y vuelva a export
 
 ## Licencia
 
-El código, el logo, los íconos, los colores y los textos de la guía son de dominio público bajo [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.es). La tipografía Atkinson Hyperlegible tiene su propia licencia (SIL Open Font License).
+El código, el logo, los íconos, los colores, los textos de la guía y la voz grabada son de dominio público bajo [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.es). Los videos se publican bajo [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es). La tipografía Atkinson Hyperlegible tiene su propia licencia (SIL Open Font License). Detalles en [LICENSE](LICENSE).

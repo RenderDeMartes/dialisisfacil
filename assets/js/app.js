@@ -1,6 +1,6 @@
 /* Diálisis Fácil · la guía web. Sin dependencias. CC0 1.0 */
 (() => {
-  const { FASES, VIDEOS, PASOS, LAVADO, urlVideo } = window.DF;
+  const { FASES, VIDEOS, PASOS, LAVADO, AVISOS, AUDIO, urlVideo, textoPaso } = window.DF;
   const { icono, gota } = window.DFMarca;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -24,7 +24,7 @@
   // ---------- Ajustes ----------
   const DEFECTO = {
     tamano: '1', tema: 'auto', interlineado: '', espaciado: '', movimiento: '',
-    leerAuto: '', avisosReloj: 'si', velocidad: '1', voz: '',
+    leerAuto: '', avisosReloj: 'si', velocidad: '1', motorVoz: 'grabada', voz: '',
     subtitulos: 'si', tamanoSubs: '1', calidad: '1080', pantalla: 'si'
   };
   let A = { ...DEFECTO, ...leer('df-ajustes', {}) };
@@ -99,15 +99,36 @@
 
   let hablando = false;
   const alTerminarVoz = new Set();
+  const terminoVoz = () => { hablando = false; alTerminarVoz.forEach((g) => g()); alTerminarVoz.clear(); };
+  const grabada = new Audio();
+  grabada.preload = 'none';
   const callar = () => {
-    if (!habla) return;
-    habla.cancel(); hablando = false;
-    alTerminarVoz.forEach((f) => f()); alTerminarVoz.clear();
+    grabada.onended = grabada.onerror = null;
+    grabada.pause();
+    habla?.cancel();
+    terminoVoz();
   };
-  // Se parte en frases: algunos navegadores cortan las lecturas largas.
-  const hablar = (texto, alFin) => {
-    if (!habla) { anunciar('Este navegador no puede leer en voz alta.'); return false; }
+
+  // Voz grabada (audio/…mp3) si está elegida y existe; si no, la voz del navegador.
+  const hablar = (texto, alFin, archivo) => {
     callar();
+    if (archivo && A.motorVoz !== 'navegador') {
+      if (alFin) alTerminarVoz.add(alFin);
+      hablando = true;
+      grabada.src = archivo;
+      grabada.playbackRate = Number(A.velocidad) || 1;
+      grabada.onended = terminoVoz;
+      grabada.onerror = () => { grabada.onerror = null; hablarNavegador(texto); };
+      grabada.play().catch((e) => { if (e.name !== 'AbortError') hablarNavegador(texto); });
+      return true;
+    }
+    return hablarNavegador(texto, alFin);
+  };
+
+  // Se parte en frases: algunos navegadores cortan las lecturas largas.
+  const hablarNavegador = (texto, alFin) => {
+    if (!habla) { anunciar('Este navegador no puede leer en voz alta.'); terminoVoz(); return false; }
+    habla.cancel();
     const voz = voces.find((v) => v.voiceURI === A.voz) || voces[0];
     const frases = (texto.replace(/\s+/g, ' ').match(/[^.!?:;]+[.!?:;]*/g) || []).map((f) => f.trim()).filter(Boolean);
     if (alFin) alTerminarVoz.add(alFin);
@@ -117,12 +138,12 @@
       u.lang = voz ? voz.lang : 'es-419';
       if (voz) u.voice = voz;
       u.rate = Number(A.velocidad) || 1;
-      if (i === frases.length - 1) u.onend = u.onerror = () => { hablando = false; alTerminarVoz.forEach((g) => g()); alTerminarVoz.clear(); };
+      if (i === frases.length - 1) u.onend = u.onerror = terminoVoz;
       habla.speak(u);
     });
     return true;
   };
-  $('#probar-voz').addEventListener('click', () => hablar('Paso 31. Drenar. Deje salir todo el líquido usado.'));
+  $('#probar-voz').addEventListener('click', () => hablar(AVISOS.prueba, null, AUDIO.aviso('prueba')));
 
   // ---------- Pantalla encendida (Wake Lock) ----------
   let candado = null;
@@ -184,14 +205,14 @@
       const i = parteLavado(reloj.total - r);
       if (i !== reloj.parte && i < LAVADO.length) {
         reloj.parte = i;
-        if (A.avisosReloj === 'si') { pitido(1); hablar(LAVADO[i].parte); }
+        if (A.avisosReloj === 'si') { pitido(1); setTimeout(() => hablar(LAVADO[i].parte, null, AUDIO.lavado(i)), 350); }
         anunciar(LAVADO[i].parte);
       }
     }
     if (r <= 0 && reloj.corriendo) {
       reloj.corriendo = false; reloj.restante = 0; clearInterval(intervalo);
-      const msj = reloj.tipo === 'lavado' ? 'Terminó el lavado de 5 minutos. Enjuague de los dedos hacia el codo.' : 'Tiempo cumplido. Revise si ya terminó.';
-      if (A.avisosReloj === 'si') { pitido(3); hablar(msj); }
+      const clave = reloj.tipo === 'lavado' ? 'fin-lavado' : 'fin-tiempo', msj = AVISOS[clave];
+      if (A.avisosReloj === 'si') { pitido(3); setTimeout(() => hablar(msj, null, AUDIO.aviso(clave)), 1000); }
       anunciar(msj);
     }
     pintarReloj();
@@ -397,11 +418,6 @@
     };
   };
 
-  const textoParaLeer = (p) => [
-    `Paso ${p.n} de ${TOTAL}.`, `${p.titulo}.`, p.texto,
-    p.aviso ? (p.aviso.tipo === 'alerta' ? `Atención: ${p.aviso.texto}` : `${p.aviso.texto}.`) : ''
-  ].join(' ');
-
   const montarPaso = (n) => {
     const p = PASOS[n - 1];
     escribir('df-ultimo-paso', n);
@@ -409,7 +425,7 @@
     const marcar = (on) => { bEsc.setAttribute('aria-pressed', String(on)); $('span', bEsc).textContent = on ? 'Detener la voz' : 'Escuchar este paso'; };
     bEsc.addEventListener('click', () => {
       if (hablando) { callar(); marcar(false); return; }
-      if (hablar(textoParaLeer(p), () => marcar(false))) marcar(true);
+      if (hablar(textoPaso(p), () => marcar(false), AUDIO.paso(n))) marcar(true);
     });
     const bVid = $('#ver-video');
     if (bVid) bVid.addEventListener('click', () => {
@@ -433,7 +449,7 @@
       $('#reloj-reiniciar').addEventListener('click', () => { if (reloj && reloj.paso === n) reiniciarReloj(); });
     }
     pintarReloj();
-    if (A.leerAuto === 'si') { if (hablar(textoParaLeer(p), () => marcar(false))) marcar(true); }
+    if (A.leerAuto === 'si') { if (hablar(textoPaso(p), () => marcar(false), AUDIO.paso(n))) marcar(true); }
     if (!sesion.get('df-aviso')) $('#aviso').showModal();
   };
 
@@ -442,20 +458,21 @@
     vista: 'pasos',
     html: `<div class="contenedor pila pila--grande">
       <div class="pila">
-        <h1 tabindex="-1" class="titulo-seccion">Los ${TOTAL} pasos</h1>
-        <p class="texto-2">Toque un paso para abrirlo. También puede imprimir la guía completa.</p>
-        <div class="acciones no-imprimir"><a class="btn btn--lleno" href="#/paso/1">Empezar en el paso 1</a><button type="button" class="btn" id="imprimir">Imprimir la guía</button></div>
+        <div class="solo-imprimir marca-pdf">${gota()}<b>Diálisis <span>Fácil</span></b><span>dialisisfacil.com</span></div>
+        <h1 tabindex="-1" class="titulo-seccion">${TOTAL} pasos para la diálisis peritoneal en casa</h1>
+        <p class="texto-2 no-imprimir">Toque un paso para abrirlo. También puede descargar la guía completa en PDF.</p>
+        <p class="solo-imprimir">Se hace entre dos personas: una lee los pasos en voz alta y la otra los hace. Esta guía es una ayuda visual y no es oficial: no reemplaza las indicaciones de su médico ni la capacitación de su unidad. Si el líquido sale turbio, llame a su unidad. Videos, voz y cronómetros en dialisisfacil.com.</p>
+        <div class="acciones no-imprimir"><a class="btn btn--lleno" href="#/paso/1">Empezar en el paso 1</a><a class="btn" href="descargas/guia-dialisis-facil.pdf" download>Descargar la guía en PDF</a></div>
       </div>
       ${FASES.map((f) => `<section class="fase" aria-labelledby="fase-${f.n}">
         <div class="fase__titulo"><span class="fase__num" aria-hidden="true">${f.n}</span><div><h2 id="fase-${f.n}">${esc(f.nombre)}</h2><span class="etiqueta">Pasos ${f.desde}–${f.hasta}</span></div></div>
         <ol class="lista-pasos">
           ${PASOS.filter((p) => p.fase === f.n).map((p) => `<li><a href="#/paso/${p.n}">
             <span class="mono" aria-hidden="true">${p.n}</span><span class="mini">${icono(p.icono, 2.6)}</span>
-            <span><b><span class="oculto">Paso ${p.n}: </span>${esc(p.titulo)}</b><span class="resumen">${esc(p.texto)}</span></span></a></li>`).join('')}
+            <span><b><span class="oculto">Paso ${p.n}: </span>${esc(p.titulo)}</b><span class="resumen">${esc(p.texto)}</span>${p.aviso ? `<span class="resumen solo-imprimir"><b>${p.aviso.tipo === 'alerta' ? '⚠ Atención:' : '⏱'}</b> ${esc(p.aviso.texto)}</span>` : ''}</span></a></li>`).join('')}
         </ol>
       </section>`).join('')}
-    </div>`,
-    despues: () => $('#imprimir').addEventListener('click', () => window.print())
+    </div>`
   });
 
   const rangoPasos = (ps) => !ps.length ? 'Antes de empezar' : ps.length === 1 ? `Paso ${ps[0]}` : `Pasos ${ps[0]}–${ps[ps.length - 1]}`;

@@ -13,4 +13,8 @@ Excepciones:
   SIL Open Font License 1.1 y no forma parte de esta renuncia.
 - marca/kit/support.js y marca/kit/animations-v3.jsx son el motor de la
   herramienta de diseño con la que se hizo el manual de marca.
-- Los videos no están en este repositorio. Su licencia se indica en Internet Archive.
+- Los videos no están en este repositorio. Se publican bajo CC BY-NC-ND 4.0
+  (compartir con crédito, sin uso comercial y sin modificarlos), para que nadie
+  pueda editar el procedimiento: https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es
+- La voz grabada (audio/) se generó con Piper y la voz es_MX-claude-high
+  (Apache-2.0). Los audios se publican bajo CC0 como el resto de la guía.

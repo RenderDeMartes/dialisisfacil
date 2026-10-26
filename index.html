@@ -67,6 +67,7 @@
     <nav aria-label="Pie de página" class="pie__menu">
       <ul>
         <li><a href="#/pasos">Los 42 pasos</a></li>
+        <li><a href="descargas/guia-dialisis-facil.pdf" download>Descargar la guía en PDF</a></li>
         <li><a href="#/videos">Videos</a></li>
         <li><a href="#/marca">Marca y colaboración</a></li>
         <li><a href="marca/dialisis-facil-kit-de-marca.zip" download>Descargar el kit de marca</a></li>
@@ -75,7 +76,7 @@
       </ul>
     </nav>
     <p><b>Aviso:</b> esta guía es una ayuda visual y no es oficial. No reemplaza las indicaciones de su médico ni la capacitación de su unidad. Ante cualquier duda, consulte a su unidad.</p>
-    <p>Videos con una enfermera especialista en diálisis peritoneal. La marca y los textos de la guía son libres bajo <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.es">CC0 1.0</a>.</p>
+    <p>Videos con una enfermera especialista en diálisis peritoneal, bajo licencia <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es">CC BY-NC-ND 4.0</a>. La marca, los textos y el código son libres bajo <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.es">CC0 1.0</a>.</p>
     <p>Un proyecto de <a href="https://veuxweb.com/es/">VEUX</a>.</p>
   </div>
 </footer>
@@ -138,11 +139,15 @@
 
     <fieldset>
       <legend>Voz</legend>
+      <div class="opciones">
+        <label class="opcion"><input type="radio" name="motorVoz" value="grabada"><span>Voz grabada (recomendada)</span></label>
+        <label class="opcion"><input type="radio" name="motorVoz" value="navegador"><span>Voz del teléfono</span></label>
+      </div>
       <label class="interruptor">Leer cada paso en voz alta al llegar <input type="checkbox" name="leerAuto" value="si"></label>
       <label class="interruptor">Avisos con voz y sonido en los cronómetros <input type="checkbox" name="avisosReloj" value="si"></label>
       <label for="velocidad">Velocidad de la voz: <b id="velocidad-valor">1</b></label>
       <input type="range" id="velocidad" name="velocidad" min="0.6" max="1.4" step="0.1">
-      <label for="voz">Voz</label>
+      <label for="voz">Voz del teléfono</label>
       <select id="voz" name="voz"><option value="">Automática (español)</option></select>
       <button type="button" class="btn btn--chico" id="probar-voz">Probar la voz</button>
       <p class="ayuda" id="sin-voz" hidden>Este navegador no tiene voz en español. Pruebe con Chrome, Edge o Safari actualizados.</p>
