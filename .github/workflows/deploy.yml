@@ -65,8 +65,9 @@ jobs:
             set net:max-retries 2;
             set net:timeout 20;
             open -u \"$FTP_USERNAME\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
+            rm -r -f .git .github;
             mirror -R --delete --verbose \
-              --exclude-glob .git* --exclude-glob .github/ --exclude-glob README.md \
+              --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .gitignore --exclude-glob README.md \
               --exclude-glob .well-known/ --exclude-glob cgi-bin/ \
               ./ ./
           "
