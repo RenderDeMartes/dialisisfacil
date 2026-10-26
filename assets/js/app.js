@@ -34,6 +34,10 @@
     raiz.style.setProperty('--palabras', A.espaciado === 'amplio' ? '0.2em' : 'normal');
     raiz.style.setProperty('--subs', A.tamanoSubs);
     if (A.movimiento === 'reducido') raiz.dataset.movimiento = 'reducido'; else delete raiz.dataset.movimiento;
+    // Elegir la voz del teléfono solo tiene sentido si no se usa la voz grabada.
+    const conTelefono = A.motorVoz === 'navegador';
+    $('#voz').hidden = $('label[for="voz"]').hidden = !conTelefono;
+    if (!conTelefono) $('#sin-voz').hidden = true;
     const tema = { claro: '#0A5573', oscuro: '#0A1F2C', contraste: '#000000' }[A.tema] || '#0A5573';
     $('meta[name="theme-color"]').setAttribute('content', tema);
     $$('video').forEach(ajustarVideo);
@@ -89,7 +93,7 @@
     sel.innerHTML = '<option value="">Automática (español)</option>' +
       voces.map((v) => `<option value="${esc(v.voiceURI)}">${esc(v.name)} · ${esc(v.lang)}</option>`).join('');
     sel.value = A.voz;
-    $('#sin-voz').hidden = !!voces.length;
+    $('#sin-voz').hidden = !!voces.length || A.motorVoz !== 'navegador';
   };
   if (habla) { cargarVoces(); habla.addEventListener?.('voiceschanged', cargarVoces); }
 
@@ -237,7 +241,9 @@
     if (reloj && (reloj.corriendo || reloj.restante < reloj.total) && enPaso !== reloj.paso) {
       const p = PASOS[reloj.paso - 1];
       banda.hidden = false;
-      banda.innerHTML = `<span>⏱ Paso ${p.n} · ${esc(p.titulo)}: <span class="mono">${mmss(restante())}</span>${reloj.corriendo ? '' : ' (en pausa)'}</span>
+      const r = restante();
+      const estado = r <= 0 ? '<b>terminó</b>' : `<span class="mono">${mmss(r)}</span>${reloj.corriendo ? '' : ' (en pausa)'}`;
+      banda.innerHTML = `<span>⏱ Paso ${p.n} · ${esc(p.titulo)}: ${estado}</span>
         <a class="btn btn--chico" href="#/paso/${p.n}">Volver al paso ${p.n}</a>`;
     } else { banda.hidden = true; banda.innerHTML = ''; }
 
@@ -328,14 +334,19 @@
         v.currentTime = cues[b.dataset.cue].ini; v.play().catch(() => {});
       });
       let actual = -1;
-      v.addEventListener('timeupdate', () => {
-        const i = cues.findIndex((c) => v.currentTime >= c.ini && v.currentTime < c.fin);
+      const marcar = (t) => {
+        // La frase que suena, o la siguiente si el video está en un silencio.
+        let i = cues.findIndex((c) => t >= c.ini && t < c.fin);
+        if (i < 0) i = cues.findIndex((c) => c.ini >= t);
         if (i === actual || i < 0) return;
         $$('[aria-current]', lugar).forEach((b) => b.removeAttribute('aria-current'));
         const b = $(`[data-cue="${i}"]`, lugar); b.setAttribute('aria-current', 'true');
         if (lugar.closest('details').open) lugar.scrollTo({ top: b.offsetTop - lugar.clientHeight / 2, behavior: raiz.dataset.movimiento ? 'auto' : 'smooth' });
         actual = i;
-      });
+      };
+      v.addEventListener('timeupdate', () => marcar(v.currentTime));
+      lugar.closest('details').addEventListener('toggle', () => { actual = -1; marcar(v.currentTime || desde); });
+      marcar(desde);
     } catch (e) {
       lugar.innerHTML = '<p>No se pudo cargar la transcripción.</p>';
     }
@@ -502,7 +513,7 @@
       titulo: `${v.titulo} · Videos · Diálisis Fácil`,
       vista: 'video',
       html: `<div class="contenedor angosto pila">
-        <a href="#/videos" class="no-imprimir">◀ Todos los videos</a>
+        <a href="#/videos" class="volver no-imprimir">◀ Todos los videos</a>
         <span class="etiqueta">Video ${i + 1} de ${VIDEOS.length} · ${mmss(v.dur)} · ${rangoPasos(v.pasos)}</span>
         <h1 tabindex="-1" class="titulo-seccion">${esc(v.titulo)}</h1>
         <p>${esc(v.desc)}</p>
@@ -673,6 +684,8 @@
     // Si se cerró sin aceptar (Escape, gesto de atrás), vuelve a salir.
     if (!dlgAviso.returnValue) { mostrarAviso(); return; }
     $('video', avisoVideo).pause();
+    // Si la lectura automática está activa, el paso se lee al aceptar el aviso.
+    if (A.leerAuto === 'si' && document.body.dataset.vista === 'paso') $('#escuchar')?.click();
   });
   dlgAviso.addEventListener('cancel', (e) => e.preventDefault());
 

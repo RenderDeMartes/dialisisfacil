@@ -9,8 +9,9 @@ fines comerciales, sin pedir permiso.
 Texto legal completo: https://creativecommons.org/publicdomain/zero/1.0/legalcode.es
 
 Excepciones:
-- La tipografía Atkinson Hyperlegible (Braille Institute) se distribuye bajo la
-  SIL Open Font License 1.1 y no forma parte de esta renuncia.
+- La tipografía Atkinson Hyperlegible (Braille Institute), en assets/fuentes/, se
+  distribuye bajo la SIL Open Font License 1.1 (assets/fuentes/OFL.txt) y no forma
+  parte de esta renuncia.
 - marca/kit/support.js y marca/kit/animations-v3.jsx son el motor de la
   herramienta de diseño con la que se hizo el manual de marca.
 - Los videos no están en este repositorio. Se publican bajo CC BY-NC-ND 4.0
