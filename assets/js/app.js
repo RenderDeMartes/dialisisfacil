@@ -16,10 +16,6 @@
   // ---------- Almacenamiento local (sin cookies). Si el navegador lo bloquea, todo sigue funcionando. ----------
   const leer = (k, def) => { try { const v = localStorage.getItem(k); return v == null ? def : JSON.parse(v); } catch (e) { return def; } };
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } };
-  const sesion = {
-    get: (k) => { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
-    set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) { /* nada */ } }
-  };
 
   // ---------- Ajustes ----------
   const DEFECTO = {
@@ -449,8 +445,7 @@
       $('#reloj-reiniciar').addEventListener('click', () => { if (reloj && reloj.paso === n) reiniciarReloj(); });
     }
     pintarReloj();
-    if (A.leerAuto === 'si') { if (hablar(textoPaso(p), () => marcar(false), AUDIO.paso(n))) marcar(true); }
-    if (!sesion.get('df-aviso')) $('#aviso').showModal();
+    if (A.leerAuto === 'si' && !$('#aviso').open) { if (hablar(textoPaso(p), () => marcar(false), AUDIO.paso(n))) marcar(true); }
   };
 
   const vistaPasos = () => ({
@@ -664,10 +659,13 @@
   }, { passive: true });
 
   // ---------- Aviso inicial ----------
+  // Sale siempre al entrar a la página: hay que aceptarlo para usar la guía.
   const dlgAviso = $('#aviso');
   $$('[data-icono]', dlgAviso).forEach((s) => { s.outerHTML = icono(s.dataset.icono, 3); });
+  const mostrarAviso = () => { dlgAviso.returnValue = ''; dlgAviso.showModal(); };
   dlgAviso.addEventListener('close', () => {
-    sesion.set('df-aviso', '1');
+    // Si se cerró sin elegir un botón (Escape, gesto de atrás), vuelve a salir.
+    if (!dlgAviso.returnValue) { mostrarAviso(); return; }
     if (dlgAviso.returnValue === 'video') location.hash = '#/video/00-aviso-importante';
   });
   dlgAviso.addEventListener('cancel', (e) => e.preventDefault());
@@ -678,6 +676,7 @@
   llenarForm();
   aplicarAjustes();
   rutear();
+  mostrarAviso();
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     navigator.serviceWorker.register('sw.js').catch(() => { /* sin modo sin conexión */ });
