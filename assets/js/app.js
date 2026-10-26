@@ -307,8 +307,11 @@
     const v = $('video', caja);
     ajustarVideo(v);
     v.addEventListener('loadedmetadata', () => { ajustarVideo(v); if (desde) v.currentTime = desde; }, { once: true });
+    // El aviso de error solo si no cargó ninguna calidad; se quita si después carga.
+    const aviso = $('[data-error]', caja);
     const fuentes = $$('source', v);
-    fuentes[fuentes.length - 1].addEventListener('error', () => { $('[data-error]', caja).hidden = false; });
+    fuentes[fuentes.length - 1].addEventListener('error', () => { if (v.readyState === 0) aviso.hidden = false; });
+    v.addEventListener('loadeddata', () => { aviso.hidden = true; });
     $$('[data-vel]', caja).forEach((b) => b.addEventListener('click', () => {
       v.playbackRate = Number(b.dataset.vel);
       $$('[data-vel]', caja).forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
@@ -662,11 +665,14 @@
   // Sale siempre al entrar a la página: hay que aceptarlo para usar la guía.
   const dlgAviso = $('#aviso');
   $$('[data-icono]', dlgAviso).forEach((s) => { s.outerHTML = icono(s.dataset.icono, 3); });
+  const avisoVideo = $('#aviso-video');
+  avisoVideo.innerHTML = htmlVideo('00-aviso-importante');
+  montarVideo(avisoVideo, '00-aviso-importante', 0);
   const mostrarAviso = () => { dlgAviso.returnValue = ''; dlgAviso.showModal(); };
   dlgAviso.addEventListener('close', () => {
-    // Si se cerró sin elegir un botón (Escape, gesto de atrás), vuelve a salir.
+    // Si se cerró sin aceptar (Escape, gesto de atrás), vuelve a salir.
     if (!dlgAviso.returnValue) { mostrarAviso(); return; }
-    if (dlgAviso.returnValue === 'video') location.hash = '#/video/00-aviso-importante';
+    $('video', avisoVideo).pause();
   });
   dlgAviso.addEventListener('cancel', (e) => e.preventDefault());
 

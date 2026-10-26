@@ -1,8 +1,8 @@
 /* Diálisis Fácil · modo sin conexión: la guía (texto, íconos y subtítulos) funciona sin internet.
  * Los videos no se guardan: pesan mucho y vienen de archive.org. */
-const VERSION = 'df-v1';
+const VERSION = 'df-v3';
 const BASE = [
-  './', 'index.html', 'assets/css/app.css', 'assets/js/datos.js', 'assets/js/marca.js', 'assets/js/app.js',
+  './', 'index.html', 'assets/css/app.css?v=3', 'assets/js/datos.js?v=3', 'assets/js/marca.js?v=3', 'assets/js/app.js?v=3',
   'img/favicon.svg', 'manifest.webmanifest'
 ];
 

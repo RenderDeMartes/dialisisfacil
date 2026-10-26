@@ -17,7 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;700&family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/app.css">
+<!-- ?v= sube con cada cambio de CSS o JS, para que los teléfonos no usen la versión vieja guardada -->
+<link rel="stylesheet" href="assets/css/app.css?v=3">
 <script>
   // Aplica los ajustes guardados antes de pintar, para que no parpadee.
   (function () {
@@ -92,10 +93,13 @@
       <p><b>Se hace entre dos personas.</b> Una lee los pasos en voz alta y la otra los hace. Quien hace el cambio no toca el teléfono, por las bacterias.</p>
     </div>
     <p>Esta guía es una ayuda visual y no es oficial. No reemplaza las indicaciones de su médico ni la capacitación de su unidad. Cada caso es diferente.</p>
+    <section aria-labelledby="aviso-video-titulo" class="pila">
+      <h3 id="aviso-video-titulo" style="font-size:1.25rem">Escuche el aviso de la enfermera</h3>
+      <div id="aviso-video"></div>
+    </section>
     <p class="texto-2">Puede agrandar la letra, cambiar los colores o activar la voz en <b>Ajustes</b>.</p>
   </div>
   <form method="dialog" class="dialogo__pie">
-    <button class="btn" value="video" type="submit">Ver el aviso en video</button>
     <button class="btn btn--lleno" value="ok" type="submit" autofocus>Entendido, continuar</button>
   </form>
 </dialog>
@@ -181,8 +185,8 @@
   </div>
 </dialog>
 
-<script src="assets/js/datos.js"></script>
-<script src="assets/js/marca.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/datos.js?v=3"></script>
+<script src="assets/js/marca.js?v=3"></script>
+<script src="assets/js/app.js?v=3"></script>
 </body>
 </html>
