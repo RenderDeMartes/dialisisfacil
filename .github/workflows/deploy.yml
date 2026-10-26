@@ -31,24 +31,42 @@ jobs:
         if: steps.check.outputs.ok == 'true'
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
+      # The host's FTP cert is for its own name (not the domain) and the server
+      # does not send the intermediate, so fetch it from the cert's AIA URL.
+      - name: Build CA bundle
+        if: steps.check.outputs.ok == 'true'
+        run: |
+          echo QUIT | openssl s_client -connect "$FTP_HOST:21" -starttls ftp -servername "$FTP_HOST" 2>/dev/null \
+            | openssl x509 > leaf.pem
+          AIA=$(openssl x509 -in leaf.pem -noout -ext authorityInfoAccess | sed -n 's/.*CA Issuers - URI:\(.*\)/\1/p')
+          curl -fsSL "$AIA" -o inter.der
+          openssl x509 -inform DER -in inter.der -out inter.pem 2>/dev/null || cp inter.der inter.pem
+          cat /etc/ssl/certs/ca-certificates.crt inter.pem > "$RUNNER_TEMP/ca.pem"
+          rm leaf.pem inter.der inter.pem
+        env:
+          FTP_HOST: caracal.smart-hosts.net
+
       # FTPS (explicit TLS). EPSV over TLS resets on this host, so force plain PASV.
-      # FTP account is rooted at /public_html; no --delete so other files stay.
+      # FTP account is rooted at /public_html. --delete makes the server match the
+      # repo, except cPanel's .well-known (AutoSSL) and cgi-bin.
       - name: Upload via FTPS
         if: steps.check.outputs.ok == 'true'
         env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_HOST: caracal.smart-hosts.net
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
           lftp -c "
             set ftp:ssl-force true;
             set ftp:ssl-protect-data true;
+            set ssl:ca-file $RUNNER_TEMP/ca.pem;
             set ftp:prefer-epsv false;
             set ftp:passive-mode true;
             set net:max-retries 2;
             set net:timeout 20;
-            open -u \"$FTP_USERNAME\",\"$FTP_PASSWORD\" \"$FTP_SERVER\";
-            mirror -R --verbose \
+            open -u \"$FTP_USERNAME\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
+            mirror -R --delete --verbose \
               --exclude-glob .git* --exclude-glob .github/ --exclude-glob README.md \
+              --exclude-glob .well-known/ --exclude-glob cgi-bin/ \
               ./ ./
           "
