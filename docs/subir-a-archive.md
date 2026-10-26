@@ -4,8 +4,8 @@
 
 Los videos comprimidos, cada uno con su `.srt`, salen de `bash tools/comprimir-videos.sh` y `node tools/preparar-archive.mjs`:
 
-- `F:\Dialisis_Videos\Web\1080\` (17 MP4 + 17 SRT, unos 600 MB)
-- `F:\Dialisis_Videos\Web\720\` (17 MP4 + 17 SRT, unos 195 MB)
+- `F:\Dialisis_Videos\Web\1080\` (17 MP4 + 17 SRT, unos 560 MB)
+- `F:\Dialisis_Videos\Web\720\` (17 MP4 + 17 SRT, unos 190 MB)
 
 ## Pasos
 
