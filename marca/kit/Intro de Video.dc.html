@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Diálisis Fácil · Intro de video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;700&amp;family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<script>window.OM_SCENES = '[{"name":"Simbolo","dur":1.6,"desc":"El círculo azul aparece y cae la gota"},{"name":"Marca","dur":1.6,"desc":"El símbolo sube a la esquina y aparece el nombre"},{"name":"Titulo","dur":5,"desc":"Entran serie, título y subtítulo; se leen con calma"},{"name":"Salida","dur":0.8,"desc":"Todo se desvanece al fondo"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+<style>body{margin:0;background:#0E2A3B}a{color:#0A5573}a:hover{color:#0E2A3B}</style>
+</helmet>
+<div style="position:fixed;inset:0">
+<x-import component-from-global-scope="IntroVideo" from="./animations-v3.jsx ./intro-scene.jsx" title="{{ title }}" subtitle="{{ subtitle }}" series="{{ series }}" reduced="{{ reduced }}" hint-size="100%,100%"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Preparación&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Título&quot;},&quot;subtitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Pasos 1 a 17: calentar la bolsa, limpiar y lavarse las manos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Subtítulo&quot;},&quot;series&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Diálisis peritoneal en casa · Video 1&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Serie / episodio&quot;},&quot;reduced&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Movimiento reducido&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    return {
+      title: p.title ?? 'Preparación',
+      subtitle: p.subtitle ?? 'Pasos 1 a 17: calentar la bolsa, limpiar y lavarse las manos',
+      series: p.series ?? 'Diálisis peritoneal en casa · Video 1',
+      reduced: p.reduced ?? false
+    };
+  }
+}
+</script>
+</body>
+</html>

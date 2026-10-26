@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Diálisis Fácil · Revisión clínica de íconos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;700&amp;family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<script src="./marca.js"></script>
+<style>
+body{margin:0;background:#FBF8F2;color:#0E2A3B;font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#0A5573;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+a:hover{color:#0E2A3B}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px solid #F4B740;outline-offset:4px;border-radius:4px}
+</style>
+</helmet>
+<div style="display:flex;flex-direction:column">
+<header style="background:#0A5573;color:#FFFFFF">
+  <div style="max-width:1200px;margin:0 auto;padding:24px 24px 56px;display:flex;flex-direction:column;gap:56px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true" style="display:block"><path d="M32 6C25.2 19.6 15 29.8 15 40A17 17 0 0 0 32 57Z" fill="#FFFFFF" transform="translate(-1.6 0)"></path><path d="M32 6L32 57A17 17 0 0 0 49 40C49 29.8 38.8 19.6 32 6Z" fill="#8FD8E3" transform="translate(1.6 0)"></path></svg>
+        <span style="font-weight:800;font-size:22px;line-height:1.05;display:flex;flex-direction:column"><span>Diálisis</span><span style="color:#8FD8E3">Fácil</span></span>
+      </div>
+      <a href="Iconos.dc.html" style="min-height:44px;display:flex;align-items:center;padding:0 18px;border-radius:999px;border:2px solid #FFFFFF;color:#FFFFFF;text-decoration:none;font-size:18px;font-weight:700" style-hover="background:#FFFFFF;color:#0A5573">← Volver a Íconos</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:'Atkinson Hyperlegible Mono',monospace;font-size:18px;font-weight:700">Para nefrología · antes de la exportación final</div>
+      <h1 style="margin:0;font-size:clamp(48px,7.5vw,96px);line-height:1.02;font-weight:800;letter-spacing:-0.015em;text-wrap:balance">Revisión clínica de los íconos</h1>
+      <p style="margin:0;font-size:clamp(20px,2.2vw,26px);line-height:1.5;max-width:46ch;text-wrap:pretty">Revise que cada ícono muestre bien la acción de su paso. Sus respuestas se guardan en este navegador.</p>
+    </div>
+  </div>
+</header>
+<main style="width:100%;max-width:1200px;margin:0 auto;padding:64px 24px 120px;display:flex;flex-direction:column;gap:64px;font-size:20px;line-height:1.6;letter-spacing:0.01em">
+
+<section aria-label="Cómo revisar" style="display:flex;flex-direction:column;gap:32px">
+  <ol style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px">
+    <li style="background:#FFFFFF;border-radius:6px 28px 28px 28px;padding:24px;display:flex;gap:16px;align-items:flex-start"><span style="flex:none;width:44px;height:44px;border-radius:4px 22px 22px 22px;background:#0A5573;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Atkinson Hyperlegible Mono',monospace;font-size:20px;font-weight:700">1</span><span style="font-size:20px;line-height:1.5">Mire el ícono y los pasos donde se usa.</span></li>
+    <li style="background:#FFFFFF;border-radius:6px 28px 28px 28px;padding:24px;display:flex;gap:16px;align-items:flex-start"><span style="flex:none;width:44px;height:44px;border-radius:4px 22px 22px 22px;background:#0A5573;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Atkinson Hyperlegible Mono',monospace;font-size:20px;font-weight:700">2</span><span style="font-size:20px;line-height:1.5">Marque <b>Correcto</b> o <b>Cambiar</b>. Si es Cambiar, escriba qué cambiaría.</span></li>
+    <li style="background:#FFFFFF;border-radius:6px 28px 28px 28px;padding:24px;display:flex;gap:16px;align-items:flex-start"><span style="flex:none;width:44px;height:44px;border-radius:4px 22px 22px 22px;background:#0A5573;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Atkinson Hyperlegible Mono',monospace;font-size:20px;font-weight:700">3</span><span style="font-size:20px;line-height:1.5">Al terminar, copie el resumen del final y envíelo.</span></li>
+  </ol>
+  <label style="display:flex;flex-direction:column;gap:8px;max-width:520px;font-size:20px;font-weight:700">Nombre de quien revisa
+    <input type="text" value="{{ name }}" onChange="{{ onName }}" autocomplete="name" style="font:inherit;font-size:20px;font-weight:400;min-height:56px;padding:0 16px;border:2px solid #0E2A3B;border-radius:12px;background:#FFFFFF;color:#0E2A3B">
+  </label>
+</section>
+
+<div style="position:sticky;top:0;z-index:5;background:#FBF8F2;border-bottom:2px solid #0E2A3B;padding:14px 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px">
+  <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+    <div aria-live="polite" style="font-family:'Atkinson Hyperlegible Mono',monospace;font-size:18px;font-weight:700">{{ progress }}</div>
+    <div style="height:12px;background:#E3F4F7;border:1px solid #0A5573;border-radius:999px;overflow:hidden"><div style="height:100%;width:{{ pct }};background:#0A5573"></div></div>
+  </div>
+  <a href="#resumen" style="font-size:18px;font-weight:700">Ir al resumen</a>
+</div>
+
+<sc-for list="{{ phases }}" as="f" hint-placeholder-count="4">
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:center;gap:16px">
+      <span style="flex:none;width:52px;height:52px;border-radius:4px 26px 26px 26px;background:#0A5573;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Atkinson Hyperlegible Mono',monospace;font-size:22px;font-weight:700">{{ f.n }}</span>
+      <div style="display:flex;flex-direction:column">
+        <h2 style="margin:0;font-size:30px;line-height:1.2;font-weight:800">{{ f.name }}</h2>
+        <span style="font-family:'Atkinson Hyperlegible Mono',monospace;font-size:18px;color:#3D5361">{{ f.range }}</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px">
+      <sc-for list="{{ f.icons }}" as="it" hint-placeholder-count="6">
+        <div style="background:#FFFFFF;border:3px solid {{ it.border }};border-radius:6px 32px 32px 32px;padding:20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="flex:none;width:112px;height:112px;background:#E3F4F7;border-radius:6px 40px 40px 40px;display:flex;align-items:center;justify-content:center;color:#0A5573">{{ it.svg }}</div>
+            <h3 style="margin:0;font-size:22px;line-height:1.3;font-weight:800">{{ it.label }}</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:18px;font-weight:700;color:#3D5361">Se usa en los pasos:</div>
+            <sc-for list="{{ it.uses }}" as="u" hint-placeholder-count="1">
+              <div style="display:flex;gap:12px;font-size:18px;line-height:1.45"><span style="flex:none;width:32px;font-family:'Atkinson Hyperlegible Mono',monospace;font-weight:700;color:#0A5573">{{ u.n }}</span><span>{{ u.t }}</span></div>
+            </sc-for>
+          </div>
+          <div role="group" aria-label="{{ it.label }}" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <button type="button" aria-pressed="{{ it.okPressed }}" onClick="{{ it.setOk }}" style="min-height:52px;border-radius:999px;border:3px solid #0A5573;background:{{ it.okBg }};color:{{ it.okFg }};font-family:inherit;font-size:19px;font-weight:700;cursor:pointer">✓ Correcto</button>
+            <button type="button" aria-pressed="{{ it.chPressed }}" onClick="{{ it.setCh }}" style="min-height:52px;border-radius:999px;border:3px solid #0E2A3B;background:{{ it.chBg }};color:#0E2A3B;font-family:inherit;font-size:19px;font-weight:700;cursor:pointer">✎ Cambiar</button>
+          </div>
+          <sc-if value="{{ it.isCh }}" hint-placeholder-val="{{ false }}">
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:18px;font-weight:700">¿Qué cambiaría?
+              <textarea value="{{ it.note }}" onChange="{{ it.onNote }}" rows="3" style="font-family:inherit;font-size:19px;font-weight:400;line-height:1.5;padding:12px 14px;border:2px solid #0E2A3B;border-radius:12px;background:#FBF8F2;color:#0E2A3B;resize:vertical"></textarea>
+            </label>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</sc-for>
+
+<section id="resumen" style="display:flex;flex-direction:column;gap:20px;border-top:3px solid #0E2A3B;padding-top:20px">
+  <h2 style="margin:0;font-size:clamp(36px,4.5vw,56px);line-height:1.1;font-weight:800;letter-spacing:-0.01em">Resumen</h2>
+  <p style="margin:0;font-size:22px;line-height:1.5;color:#3D5361;max-width:56ch">Cópielo y envíelo por correo o WhatsApp al equipo de Diálisis Fácil.</p>
+  <div style="background:#FFFFFF;border:2px solid #0E2A3B;border-radius:6px 28px 28px 28px;padding:24px;font-family:'Atkinson Hyperlegible Mono',monospace;font-size:18px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere">{{ summary }}</div>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px">
+    <button type="button" onClick="{{ copy }}" style="min-height:56px;padding:0 28px;border-radius:999px;border:none;background:#0A5573;color:#FFFFFF;font-family:inherit;font-size:20px;font-weight:700;cursor:pointer" style-hover="background:#0E2A3B">Copiar resumen</button>
+    <span role="status" style="font-size:18px;font-weight:700">{{ msg }}</span>
+  </div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const KEY = 'dialisisfacil-revision-iconos';
+class Component extends DCLogic {
+  state = { name: '', rev: {}, msg: '' };
+  componentDidMount() {
+    try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) this.setState({ name: s.name || '', rev: s.rev || {} }); } catch (e) {}
+    this.onMarca = () => this.forceUpdate();
+    window.addEventListener('dfmarca-lista', this.onMarca);
+    if (window.DFMarca) this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener('dfmarca-lista', this.onMarca); }
+  persist = () => { try { localStorage.setItem(KEY, JSON.stringify({ name: this.state.name, rev: this.state.rev })); } catch (e) {} };
+  setRev(k, p) { this.setState(s => ({ rev: { ...s.rev, [k]: { ...(s.rev[k] || {}), ...p } }, msg: '' }), this.persist); }
+  copy() {
+    const text = this.summaryText || '';
+    const done = (ok) => this.setState({ msg: ok ? 'Resumen copiado. Ya puede pegarlo y enviarlo.' : 'No se pudo copiar. Seleccione el texto del resumen y cópielo.' });
+    const fallback = () => {
+      try { const t = document.createElement('textarea'); t.value = text; t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select(); const ok = document.execCommand('copy'); t.remove(); done(ok); } catch (e) { done(false); }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true), fallback); else fallback();
+  }
+  renderVals() {
+    const { name, rev, msg } = this.state;
+    const base = { name, msg, onName: (e) => this.setState({ name: e.target.value, msg: '' }, this.persist), copy: () => this.copy() };
+    const K = window.DFMarca, M = K ? (this.M || (this.M = K.make(React.createElement))) : null;
+    if (!M) return { ...base, phases: [], progress: 'Cargando íconos…', pct: '0%', summary: '' };
+    const leads = {};
+    K.GUIDE.forEach(([, , , list]) => list.forEach(([n, , lead]) => { leads[n] = lead.replace(/[:,.]$/, ''); }));
+    let ok = 0, ch = 0, total = 0;
+    const L = { ok: [], ch: [], none: [] };
+    const phases = K.PHASES.map(([n, pname, range, icons]) => ({
+      n, name: pname, range,
+      icons: icons.map(([k, label, st]) => {
+        total++;
+        const r = rev[k] || {}, s = r.s || null, item = `${label} (${st})`;
+        if (s === 'ok') { ok++; L.ok.push(`• ${item}`); }
+        else if (s === 'cambiar') { ch++; L.ch.push(`• ${item}: ${(r.note || '').trim() || 'sin comentario'}`); }
+        else L.none.push(`• ${item}`);
+        return {
+          svg: M.svg(k, 84), label,
+          uses: (st.match(/\d+/g) || []).map(x => ({ n: x, t: leads[x] || '' })),
+          okPressed: s === 'ok', chPressed: s === 'cambiar', isCh: s === 'cambiar',
+          okBg: s === 'ok' ? '#0A5573' : '#FFFFFF', okFg: s === 'ok' ? '#FFFFFF' : '#0A5573',
+          chBg: s === 'cambiar' ? '#F4B740' : '#FFFFFF',
+          border: s === 'ok' ? '#0A5573' : s === 'cambiar' ? '#F4B740' : '#FFFFFF',
+          note: r.note || '',
+          setOk: () => this.setRev(k, { s: s === 'ok' ? null : 'ok' }),
+          setCh: () => this.setRev(k, { s: s === 'cambiar' ? null : 'cambiar' }),
+          onNote: (e) => this.setRev(k, { note: e.target.value })
+        };
+      })
+    }));
+    const done = ok + ch, fecha = new Date().toLocaleDateString('es-CR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const parts = [
+      'Revisión clínica de íconos · Diálisis Fácil',
+      `Revisó: ${name.trim() || '(sin nombre)'}`,
+      `Fecha: ${fecha}`,
+      `Correctos: ${ok} · Para cambiar: ${ch} · Sin revisar: ${total - done} (de ${total})`
+    ];
+    if (L.ch.length) parts.push('', 'PARA CAMBIAR', ...L.ch);
+    if (L.none.length) parts.push('', 'SIN REVISAR', ...L.none);
+    if (L.ok.length) parts.push('', 'CORRECTOS', ...L.ok);
+    this.summaryText = parts.join('\n');
+    return {
+      ...base, phases,
+      progress: `${done} de ${total} revisados · ${ch} para cambiar`,
+      pct: `${Math.round((done / total) * 100)}%`,
+      summary: this.summaryText
+    };
+  }
+}
+</script>
+</body>
+</html>
