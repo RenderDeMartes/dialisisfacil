@@ -37,7 +37,7 @@ Paso 03 Lavado de manos sencillo|04-lavado-de-manos-sencillo|16
 Paso 04 Limpieza de botella|05-limpiar-la-botella-de-alcohol|10
 Paso 05 Lavado de manos completo|06-lavado-de-manos-completo|24
 Paso 06 Limpieza mesa y gigante|07-limpiar-la-mesa-y-el-gigante|20
-Paso 07 Limpieza de yodo y suero|08-limpiar-el-yodo-y-la-bolsa|16
+Paso 07 Limpieza de yodo y suero|08-limpiar-el-yodo-y-la-bolsa|9
 Paso 08 Limpieza Organizador|09-lavar-el-organizador|14
 Paso 09 Limpieza cateter y botella de alcohol|10-limpiar-el-cateter|14
 Paso 10 Lavado de manos 5 minutos|11-lavado-de-manos-de-5-minutos|30

@@ -1,8 +1,8 @@
 /* Diálisis Fácil · modo sin conexión: la guía (texto, íconos y subtítulos) funciona sin internet.
  * Los videos no se guardan: pesan mucho y vienen de archive.org. */
-const VERSION = 'df-v9';
+const VERSION = 'df-v10';
 const BASE = [
-  './', 'index.html', 'assets/css/app.css?v=9', 'assets/js/datos.js?v=9', 'assets/js/marca.js?v=9', 'assets/js/app.js?v=9',
+  './', 'index.html', 'assets/css/app.css?v=10', 'assets/js/datos.js?v=10', 'assets/js/marca.js?v=10', 'assets/js/app.js?v=10',
   'img/favicon.svg', 'manifest.webmanifest',
   'assets/fuentes/atkinson-hyperlegible-next-latin.woff2', 'assets/fuentes/atkinson-hyperlegible-mono-latin.woff2'
 ];

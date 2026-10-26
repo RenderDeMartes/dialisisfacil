@@ -58,10 +58,18 @@ bash tools/generar-pdf.sh      # con la página servida en el puerto 8642
 ## Ver la página en su computadora
 
 ```bash
-python -m http.server 8642
+node tools/servidor.mjs
 ```
 
 Luego abra http://localhost:8642 (los subtítulos no cargan si se abre el archivo directo).
+
+Para probar con los videos comprimidos antes de subirlos, el mismo servidor los sirve desde `F:/Dialisis_Videos/Web` (o la carpeta que se le pase como segundo argumento). En la consola del navegador:
+
+```js
+localStorage.setItem('df-archivo', 'http://localhost:8642/videos-locales/')
+```
+
+Para volver a archive.org: `localStorage.removeItem('df-archivo')`.
 
 ## Colaborar
 
